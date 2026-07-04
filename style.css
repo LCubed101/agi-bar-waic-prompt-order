@@ -105,7 +105,7 @@ button {
 
 .lang {
   display: flex;
-  padding: 3px;
+  padding: 5px;
   border: 1px solid var(--line-soft);
   background: rgba(0, 0, 0, 0.22);
   border-radius: 999px;
@@ -115,11 +115,12 @@ button {
 .lang button {
   border: 0;
   border-radius: 999px;
-  padding: 9px 13px;
+  padding: 13px 18px;
   color: var(--muted);
   background: transparent;
-  font-size: 13px;
-  min-width: 46px;
+  font-size: 16px;
+  min-width: 64px;
+  min-height: 48px;
 }
 
 .lang button.active {
