@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>点单信息 | AGI Bar</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark">AGI</div>
+        <div>
+          <p class="brand-title">AGI Bar // WAIC</p>
+          <p class="brand-sub" data-i18n="tagline">值得一见的人，总在 AGI Bar</p>
+        </div>
+      </div>
+      <div class="lang" aria-label="Language">
+        <button type="button" class="active" data-lang="zh">中</button>
+        <button type="button" data-lang="en">EN</button>
+      </div>
+    </header>
+
+    <main class="order-main">
+      <section class="order-card" aria-label="Order information">
+        <div class="result-kicker">
+          <span data-i18n="resultLabel">推荐结果</span>
+          <span class="badge">READY</span>
+        </div>
+        <div id="result"></div>
+        <div>
+          <div class="order-actions">
+            <button class="primary" type="button" id="show" data-i18n="show">给吧台看</button>
+            <button class="secondary" type="button" id="another" data-i18n="another">换一杯</button>
+          </div>
+          <div class="staff-actions">
+            <button class="secondary" type="button" id="complete" data-i18n="complete">已完成点单</button>
+            <button class="secondary" type="button" id="back" data-i18n="back">重新选择</button>
+          </div>
+        </div>
+      </section>
+
+      <aside class="side">
+        <section class="side-card">
+          <h2 data-i18n="orderSideTitle">给吧台看</h2>
+          <p data-i18n="orderSideText">英文客人请直接展示编号和中文酒名；中文客人看编号即可。</p>
+        </section>
+      </aside>
+    </main>
+
+    <section class="staff-footer" aria-label="Staff summary">
+      <button class="secondary" type="button" id="summary" data-i18n="summary">今日汇总</button>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <section class="modal" id="summaryModal" aria-modal="true" role="dialog" aria-labelledby="summaryTitle">
+    <div class="summary-panel">
+      <div class="summary-head">
+        <div>
+          <h2 id="summaryTitle" data-i18n="summaryTitle">今日汇总</h2>
+          <p id="summaryMeta"></p>
+        </div>
+        <div class="summary-tools">
+          <button class="secondary" type="button" id="exportOrders" data-i18n="exportOrders">导出数据</button>
+          <button class="icon-button" type="button" id="closeSummary" aria-label="关闭">×</button>
+        </div>
+      </div>
+      <div class="summary-grid">
+        <section class="summary-block">
+          <h3 data-i18n="topDrinks">最多点的酒</h3>
+          <ul class="summary-list" id="drinkSummary"></ul>
+        </section>
+        <section class="summary-block">
+          <h3 data-i18n="topWords">Prompt 高频词</h3>
+          <ul class="summary-list" id="wordSummary"></ul>
+        </section>
+      </div>
+      <section class="summary-block recent">
+        <h3 data-i18n="recentOrders">最近点单</h3>
+        <div id="recentOrders"></div>
+      </section>
+    </div>
+  </section>
+
+  <script src="app-data.js"></script>
+  <script>
+    const data = window.AGIBarData;
+    let draft = data.loadDraft();
+    let drink = data.drinks.find((item) => item.id === draft.currentDrinkId) || null;
+
+    const $ = (selector) => document.querySelector(selector);
+    const resultEl = $("#result");
+    const toastEl = $("#toast");
+    const summaryModalEl = $("#summaryModal");
+
+    function t(key) {
+      return data.copy[draft.lang || "zh"][key];
+    }
+
+    function renderCopy() {
+      const lang = draft.lang || "zh";
+      document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+      document.title = lang === "zh" ? "点单信息 | AGI Bar" : "Order Info | AGI Bar";
+      document.querySelectorAll("[data-i18n]").forEach((node) => {
+        node.textContent = t(node.dataset.i18n);
+      });
+      document.querySelectorAll("[data-lang]").forEach((button) => {
+        button.classList.toggle("active", button.dataset.lang === lang);
+      });
+      $("#closeSummary").setAttribute("aria-label", lang === "zh" ? "关闭" : "Close");
+      renderResult();
+      renderSummary();
+    }
+
+    function renderResult() {
+      if (!drink) {
+        resultEl.innerHTML = `
+          <div>
+            <p class="order">${t("noDrink")}</p>
+            <p class="reason">${t("noDrinkHint")}</p>
+          </div>
+        `;
+        $("#show").disabled = true;
+        $("#another").disabled = true;
+        $("#complete").disabled = true;
+        return;
+      }
+
+      const lang = draft.lang || "zh";
+      const flavors = lang === "zh" ? drink.flavorZh : drink.flavorEn;
+      resultEl.innerHTML = `
+        <div>
+          <p class="order">${t("orderPrefix")}${drink.id}</p>
+          <h1 class="drink-name ${lang === "en" ? "en-mode" : ""}">${drink.zh}</h1>
+          ${lang === "en" ? `<p class="english-name">${drink.en}</p>` : ""}
+          <div class="flavor">
+            <span class="pill">${drink.base}</span>
+            ${flavors.map((item) => `<span class="pill">${item}</span>`).join("")}
+          </div>
+          <p class="reason">${lang === "zh" ? drink.reasonZh : drink.reasonEn}</p>
+        </div>
+      `;
+      $("#show").disabled = false;
+      $("#another").disabled = false;
+      $("#complete").disabled = false;
+    }
+
+    function showToast(message) {
+      toastEl.textContent = message;
+      toastEl.classList.add("show");
+      window.setTimeout(() => toastEl.classList.remove("show"), 1600);
+    }
+
+    function chooseAnother() {
+      draft.lastDrinkId = drink ? drink.id : draft.lastDrinkId;
+      drink = data.chooseDrink(draft);
+      draft.currentDrinkId = drink.id;
+      draft.lastDrinkId = drink.id;
+      data.saveDraft(draft);
+      renderResult();
+    }
+
+    function completeOrder() {
+      if (!drink) return;
+      const order = {
+        id: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`,
+        createdAt: new Date().toISOString(),
+        lang: draft.lang || "zh",
+        prompt: (draft.prompt || "").trim(),
+        selected: (draft.selected || []).map((value) => ({
+          value,
+          zh: data.getChipLabel(value, "zh"),
+          en: data.getChipLabel(value, "en")
+        })),
+        drink: {
+          id: drink.id,
+          zh: drink.zh,
+          en: drink.en,
+          base: drink.base
+        }
+      };
+      const orders = data.loadOrders();
+      orders.push(order);
+      data.saveOrders(orders);
+      showToast(t("completed"));
+      renderSummary();
+    }
+
+    function renderSummary() {
+      const orders = data.loadOrders();
+      $("#summaryMeta").textContent = t("totalOrders").replace("{count}", orders.length);
+      const drinkCounts = data.countBy(orders, (order) => `#${order.drink.id} ${order.drink.zh}${draft.lang === "en" ? ` / ${order.drink.en}` : ""}`);
+      const wordCounts = data.countBy(data.extractWords(orders), (word) => word).slice(0, 12);
+
+      $("#drinkSummary").innerHTML = drinkCounts.length
+        ? drinkCounts.slice(0, 10).map(([name, count]) => `<li><span>${name}</span><span class="count">${count}</span></li>`).join("")
+        : `<li><span>${t("noOrders")}</span><span></span></li>`;
+
+      $("#wordSummary").innerHTML = wordCounts.length
+        ? wordCounts.map(([word, count]) => `<li><span>${word}</span><span class="count">${count}</span></li>`).join("")
+        : `<li><span>${t("noOrders")}</span><span></span></li>`;
+
+      $("#recentOrders").innerHTML = orders.length
+        ? orders.slice(-8).reverse().map((order) => {
+          const time = new Date(order.createdAt).toLocaleTimeString(draft.lang === "zh" ? "zh-CN" : "en-US", { hour: "2-digit", minute: "2-digit" });
+          const prompt = order.prompt || order.selected.map((item) => draft.lang === "zh" ? item.zh : item.en).join(" / ");
+          return `<div class="recent-row"><span>${time}</span><span><b>#${order.drink.id} ${order.drink.zh}</b><br>${prompt}</span></div>`;
+        }).join("")
+        : `<div class="recent-row"><span></span><span>${t("noOrders")}</span></div>`;
+    }
+
+    function exportOrders() {
+      const orders = data.loadOrders();
+      const header = ["createdAt", "language", "drinkNumber", "drinkZh", "drinkEn", "base", "prompt", "keywordsZh", "keywordsEn"];
+      const rows = orders.map((order) => [
+        order.createdAt,
+        order.lang,
+        order.drink.id,
+        order.drink.zh,
+        order.drink.en,
+        order.drink.base,
+        order.prompt,
+        order.selected.map((item) => item.zh).join(" / "),
+        order.selected.map((item) => item.en).join(" / ")
+      ]);
+      const csv = [header, ...rows].map((row) => row.map(data.csvCell).join(",")).join("\n");
+      const blob = new Blob(["\ufeff", csv], { type: "text/csv;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `agi-bar-waic-orders-${new Date().toISOString().slice(0, 10)}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    document.querySelectorAll("[data-lang]").forEach((button) => {
+      button.addEventListener("click", () => {
+        draft.lang = button.dataset.lang;
+        data.saveDraft(draft);
+        renderCopy();
+      });
+    });
+
+    $("#show").addEventListener("click", () => {
+      if (drink) showToast(t("copied"));
+    });
+    $("#another").addEventListener("click", chooseAnother);
+    $("#complete").addEventListener("click", completeOrder);
+    $("#back").addEventListener("click", () => {
+      window.location.href = "index.html";
+    });
+    $("#summary").addEventListener("click", () => {
+      renderSummary();
+      summaryModalEl.classList.add("open");
+    });
+    $("#closeSummary").addEventListener("click", () => summaryModalEl.classList.remove("open"));
+    $("#exportOrders").addEventListener("click", exportOrders);
+    summaryModalEl.addEventListener("click", (event) => {
+      if (event.target === summaryModalEl) summaryModalEl.classList.remove("open");
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") summaryModalEl.classList.remove("open");
+    });
+
+    renderCopy();
+  </script>
+</body>
+</html>
