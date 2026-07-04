@@ -34,9 +34,7 @@
       groupIdentity: "身份",
       groupMood: "心情",
       groupWant: "今晚想要",
-      groupOccasion: "场景",
-      orderSideTitle: "给吧台看",
-      orderSideText: "英文客人请直接展示编号和中文酒名；中文客人看编号即可。"
+      groupOccasion: "场景"
     },
     en: {
       tagline: "People Worth Meeting Are Always at AGI Bar",
@@ -72,9 +70,7 @@
       groupIdentity: "I am",
       groupMood: "Mood",
       groupWant: "I want",
-      groupOccasion: "Occasion",
-      orderSideTitle: "Show This",
-      orderSideText: "The large number and Chinese drink name are for the bartender. The English name is for you."
+      groupOccasion: "Occasion"
     }
   };
 
