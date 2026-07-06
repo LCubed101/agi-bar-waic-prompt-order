@@ -214,7 +214,7 @@ textarea {
   width: 100%;
   min-height: 128px;
   resize: vertical;
-  padding: 18px 58px 18px 18px;
+  padding: 18px 78px 18px 18px;
   border-radius: var(--radius);
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(2, 2, 2, 0.34);
@@ -235,10 +235,10 @@ textarea::placeholder {
 
 .mic {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 42px;
-  height: 42px;
+  top: 10px;
+  right: 10px;
+  width: 56px;
+  height: 56px;
   border: 1px solid var(--line-soft);
   border-radius: 999px;
   background: rgba(244, 163, 64, 0.08);
@@ -248,8 +248,8 @@ textarea::placeholder {
 }
 
 .mic svg {
-  width: 20px;
-  height: 20px;
+  width: 26px;
+  height: 26px;
   stroke: currentColor;
   stroke-width: 2;
   fill: none;
@@ -262,10 +262,6 @@ textarea::placeholder {
   color: white;
   border-color: var(--red);
   box-shadow: 0 0 0 6px rgba(239, 91, 69, 0.18);
-}
-
-.mic.hidden {
-  display: none;
 }
 
 .status {
