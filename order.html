@@ -181,8 +181,13 @@
       const orders = data.loadOrders();
       orders.push(order);
       data.saveOrders(orders);
+      draft.currentDrinkId = null;
+      data.saveDraft(draft);
       showToast(t("completed"));
       renderSummary();
+      window.setTimeout(() => {
+        window.location.href = "index.html";
+      }, 650);
     }
 
     function renderSummary() {
