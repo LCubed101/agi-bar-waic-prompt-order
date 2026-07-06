@@ -264,6 +264,10 @@ textarea::placeholder {
   box-shadow: 0 0 0 6px rgba(239, 91, 69, 0.18);
 }
 
+.mic.hidden {
+  display: none;
+}
+
 .status {
   min-height: 24px;
   margin: 10px 0 2px;
@@ -644,17 +648,26 @@ textarea::placeholder {
   }
 
   textarea {
-    min-height: 104px;
+    min-height: 92px;
   }
 
   .groups {
-    gap: 12px;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 14px;
     margin-top: 12px;
   }
 
+  .group h2 {
+    margin-bottom: 8px;
+  }
+
   .chip {
-    padding: 9px 11px;
+    padding: 8px 10px;
     font-size: 13px;
+  }
+
+  .actions {
+    margin-top: 16px;
   }
 
   .primary,

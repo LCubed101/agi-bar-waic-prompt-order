@@ -143,7 +143,10 @@
 
     function setupSpeech() {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SpeechRecognition) return;
+      if (!SpeechRecognition) {
+        $("#mic").classList.add("hidden");
+        return;
+      }
 
       recognition = new SpeechRecognition();
       recognition.continuous = false;
