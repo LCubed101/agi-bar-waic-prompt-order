@@ -150,6 +150,13 @@
       window.setTimeout(() => toastEl.classList.remove("show"), 1600);
     }
 
+    function setLanguage(nextLang) {
+      if (!nextLang || draft.lang === nextLang) return;
+      draft.lang = nextLang;
+      data.saveDraft(draft);
+      renderCopy();
+    }
+
     function chooseAnother() {
       draft.lastDrinkId = drink ? drink.id : draft.lastDrinkId;
       drink = data.chooseDrink(draft);
@@ -239,12 +246,17 @@
       URL.revokeObjectURL(url);
     }
 
-    document.querySelectorAll("[data-lang]").forEach((button) => {
-      button.addEventListener("click", () => {
-        draft.lang = button.dataset.lang;
-        data.saveDraft(draft);
-        renderCopy();
-      });
+    document.querySelector(".lang").addEventListener("pointerup", (event) => {
+      const button = event.target.closest("[data-lang]");
+      if (!button) return;
+      event.preventDefault();
+      setLanguage(button.dataset.lang);
+    });
+
+    document.querySelector(".lang").addEventListener("click", (event) => {
+      const button = event.target.closest("[data-lang]");
+      if (!button) return;
+      setLanguage(button.dataset.lang);
     });
 
     $("#show").addEventListener("click", () => {
