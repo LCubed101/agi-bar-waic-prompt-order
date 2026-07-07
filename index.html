@@ -36,13 +36,6 @@
 
         <div class="input-wrap">
           <textarea id="prompt" data-i18n-placeholder="placeholder" placeholder="比如：刚从 WAIC 出来，想喝一杯清爽、有上海感、适合聊天的酒。"></textarea>
-          <button type="button" class="mic" id="mic" aria-label="语音输入" title="语音输入">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3Z"></path>
-              <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-              <path d="M12 19v3"></path>
-            </svg>
-          </button>
         </div>
         <div class="status" id="status" aria-live="polite"></div>
 
@@ -63,7 +56,6 @@
     const data = window.AGIBarData;
     let draft = data.loadDraft();
     const selected = new Set(draft.selected || []);
-    let recognition = null;
 
     const $ = (selector) => document.querySelector(selector);
     const promptEl = $("#prompt");
@@ -110,8 +102,6 @@
         button.classList.toggle("active", button.dataset.lang === lang);
       });
       $("#page-title").classList.toggle("zh", lang === "zh");
-      $("#mic").setAttribute("aria-label", lang === "zh" ? "语音输入" : "Voice input");
-      $("#mic").title = lang === "zh" ? "语音输入" : "Voice input";
       renderGroups();
     }
 
@@ -139,30 +129,6 @@
       draft.lastDrinkId = drink.id;
       data.saveDraft(draft);
       window.location.href = "order.html";
-    }
-
-    function setupSpeech() {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SpeechRecognition) return;
-
-      recognition = new SpeechRecognition();
-      recognition.continuous = false;
-      recognition.interimResults = false;
-      recognition.onstart = () => {
-        $("#mic").classList.add("listening");
-        setStatus(t("listening"));
-      };
-      recognition.onend = () => $("#mic").classList.remove("listening");
-      recognition.onerror = () => {
-        $("#mic").classList.remove("listening");
-        setStatus(t("speechError"), true);
-      };
-      recognition.onresult = (event) => {
-        const transcript = Array.from(event.results).map((result) => result[0].transcript).join(" ").trim();
-        promptEl.value = promptEl.value ? `${promptEl.value} ${transcript}` : transcript;
-        setStatus("");
-        persist();
-      };
     }
 
     document.addEventListener("click", (event) => {
@@ -194,17 +160,8 @@
       showToast(t("clearSaved"));
     });
     promptEl.addEventListener("input", persist);
-    $("#mic").addEventListener("click", () => {
-      if (!recognition) {
-        setStatus(t("speechUnsupported"), true);
-        return;
-      }
-      recognition.lang = draft.lang === "zh" ? "zh-CN" : "en-US";
-      recognition.start();
-    });
 
     promptEl.value = draft.prompt || "";
-    setupSpeech();
     renderCopy();
   </script>
 </body>

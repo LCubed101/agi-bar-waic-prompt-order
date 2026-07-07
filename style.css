@@ -214,7 +214,7 @@ textarea {
   width: 100%;
   min-height: 128px;
   resize: vertical;
-  padding: 18px 78px 18px 18px;
+  padding: 18px;
   border-radius: var(--radius);
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(2, 2, 2, 0.34);
@@ -231,37 +231,6 @@ textarea:focus {
 
 textarea::placeholder {
   color: #756a60;
-}
-
-.mic {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 56px;
-  height: 56px;
-  border: 1px solid var(--line-soft);
-  border-radius: 999px;
-  background: rgba(244, 163, 64, 0.08);
-  color: var(--gold);
-  display: grid;
-  place-items: center;
-}
-
-.mic svg {
-  width: 26px;
-  height: 26px;
-  stroke: currentColor;
-  stroke-width: 2;
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.mic.listening {
-  background: var(--red);
-  color: white;
-  border-color: var(--red);
-  box-shadow: 0 0 0 6px rgba(239, 91, 69, 0.18);
 }
 
 .status {
