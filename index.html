@@ -36,14 +36,6 @@
 
         <div class="input-wrap">
           <textarea id="prompt" data-i18n-placeholder="placeholder" placeholder="比如：刚从 WAIC 出来，想喝一杯清爽、有上海感、适合聊天的酒。"></textarea>
-          <button class="mic" type="button" id="mic" aria-label="语音输入" title="语音输入">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 15a4 4 0 0 0 4-4V6a4 4 0 0 0-8 0v5a4 4 0 0 0 4 4Z"></path>
-              <path d="M19 10v1a7 7 0 0 1-14 0v-1"></path>
-              <path d="M12 18v4"></path>
-              <path d="M8 22h8"></path>
-            </svg>
-          </button>
         </div>
         <div class="status" id="status" aria-live="polite"></div>
 
@@ -70,8 +62,6 @@
     const groupsEl = $("#groups");
     const statusEl = $("#status");
     const toastEl = $("#toast");
-    const micEl = $("#mic");
-    let recognition = null;
 
     function t(key) {
       return data.copy[draft.lang || "zh"][key];
@@ -111,8 +101,6 @@
       document.querySelectorAll("[data-lang]").forEach((button) => {
         button.classList.toggle("active", button.dataset.lang === lang);
       });
-      micEl.setAttribute("aria-label", lang === "zh" ? "语音输入" : "Voice input");
-      micEl.setAttribute("title", lang === "zh" ? "语音输入" : "Voice input");
       $("#page-title").classList.toggle("zh", lang === "zh");
       renderGroups();
     }
@@ -150,42 +138,6 @@
       persist();
     }
 
-    function setupSpeech() {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SpeechRecognition) return;
-
-      recognition = new SpeechRecognition();
-      recognition.continuous = false;
-      recognition.interimResults = false;
-
-      recognition.addEventListener("start", () => {
-        micEl.classList.add("listening");
-        setStatus(t("listening"));
-      });
-
-      recognition.addEventListener("end", () => {
-        micEl.classList.remove("listening");
-      });
-
-      recognition.addEventListener("error", () => {
-        micEl.classList.remove("listening");
-        setStatus(t("speechError"), true);
-      });
-
-      recognition.addEventListener("result", (event) => {
-        const transcript = Array.from(event.results)
-          .map((result) => result[0]?.transcript || "")
-          .join("")
-          .trim();
-        if (!transcript) return;
-        promptEl.value = promptEl.value.trim()
-          ? `${promptEl.value.trim()} ${transcript}`
-          : transcript;
-        setStatus("");
-        persist();
-      });
-    }
-
     document.addEventListener("click", (event) => {
       const chip = event.target.closest("[data-chip]");
       if (!chip) return;
@@ -220,21 +172,8 @@
       showToast(t("clearSaved"));
     });
     promptEl.addEventListener("input", persist);
-    micEl.addEventListener("click", () => {
-      if (!recognition) {
-        setStatus(t("speechUnsupported"), true);
-        return;
-      }
-      recognition.lang = (draft.lang || "zh") === "zh" ? "zh-CN" : "en-US";
-      try {
-        recognition.start();
-      } catch {
-        setStatus(t("listening"));
-      }
-    });
 
     promptEl.value = draft.prompt || "";
-    setupSpeech();
     renderCopy();
   </script>
 </body>
