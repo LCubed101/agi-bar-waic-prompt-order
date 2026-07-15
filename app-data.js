@@ -2,7 +2,7 @@
   const copy = {
     zh: {
       tagline: "值得一见的人，总在 AGI Bar",
-      headline: "Prompt 点酒",
+      headline: "Prompt 点单",
       intro: "写一句、打一句，或点几个关键词，生成你的 WAIC 专属酒。端起酒杯，卸下防御，真实的社交才真正开始。",
       terminal: "一句话输入",
       placeholder: "比如：刚从 WAIC 出来，想喝一杯清爽、有上海感、适合聊天的酒。",
