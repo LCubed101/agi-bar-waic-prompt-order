@@ -103,7 +103,7 @@
       options: [
         ["refreshing", "清爽", "Something refreshing"],
         ["strong", "烈一点", "Something strong"],
-        ["lowabv", "轻松一点", "Something low-alcohol"],
+        ["lowabv", "无醇", "No alcohol"],
         ["photogenic", "适合拍照", "Something photogenic"],
         ["talk", "适合聊天", "Something easy to talk over"],
         ["surprising", "有惊喜", "Something surprising"],
@@ -158,6 +158,7 @@
     const text = normalize(promptText);
     const signals = [
       [["清爽", "refresh", "爽", "冰", "fresh"], ["refreshing", "lowabv"], 3],
+      [["无醇", "低度", "不含", "no alcohol", "non-alcohol", "nonalcoholic"], ["lowabv", "refreshing"], 5],
       [["烈", "strong", "bold", "勇气", "courage"], ["strong", "courage"], 4],
       [["投资", "investor", "钱", "融资"], ["investor", "investors"], 4],
       [["工程", "engineer", "代码", "debug"], ["engineer"], 3],
