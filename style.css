@@ -500,7 +500,7 @@ textarea::placeholder {
 
 .lab-fields {
   display: grid;
-  grid-template-columns: 0.82fr 1.18fr;
+  grid-template-columns: minmax(0, 1.16fr) minmax(0, 0.84fr);
   gap: 10px;
   margin-top: 12px;
 }
@@ -530,6 +530,10 @@ textarea::placeholder {
 
 .lab-fields ul {
   padding-left: 18px;
+}
+
+.lab-fields li + li {
+  margin-top: 2px;
 }
 
 .lab-controls,
@@ -969,6 +973,24 @@ textarea::placeholder {
     display: none;
   }
 
+  body.lab-mode .prompt-main {
+    gap: 0;
+    padding-top: 12px;
+  }
+
+  body.lab-mode .headline {
+    font-size: clamp(42px, 13vw, 64px);
+    margin-bottom: 8px;
+  }
+
+  body.lab-mode .mode-tabs {
+    margin-top: 8px;
+  }
+
+  body.lab-mode .prompt-card {
+    padding-top: 12px;
+  }
+
   .mode-tabs button {
     min-width: 0;
     flex: 1 1 0;
@@ -991,6 +1013,19 @@ textarea::placeholder {
 
   .lab-head p {
     font-size: 14px;
+  }
+
+  body.lab-mode .lab-head {
+    margin-top: 10px;
+  }
+
+  body.lab-mode .lab-head h2 {
+    font-size: 30px;
+  }
+
+  body.lab-mode .lab-head p {
+    font-size: 13px;
+    line-height: 1.35;
   }
 
   .order-card {
@@ -1023,6 +1058,65 @@ textarea::placeholder {
 
   .mix-code {
     width: 72px;
+  }
+
+  body.lab-mode .mix-list {
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  body.lab-mode .mix-card {
+    gap: 10px;
+    padding: 12px;
+  }
+
+  body.lab-mode .mix-card:only-child {
+    grid-template-columns: 54px 1fr;
+    align-items: start;
+  }
+
+  body.lab-mode .mix-card:only-child .mix-code {
+    width: 54px;
+    min-height: 54px;
+    font-size: 30px;
+  }
+
+  body.lab-mode .mix-card h3 {
+    font-size: 30px;
+  }
+
+  body.lab-mode .mix-hint {
+    margin-bottom: 4px;
+    font-size: 12px;
+  }
+
+  body.lab-mode .mix-pills {
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  body.lab-mode .pill {
+    padding: 6px 9px;
+    font-size: 12px;
+  }
+
+  body.lab-mode .lab-fields {
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  body.lab-mode .lab-fields > div {
+    padding: 9px 10px;
+  }
+
+  body.lab-mode .lab-fields p:not(.field-label),
+  body.lab-mode .lab-fields ul {
+    font-size: 13px;
+    line-height: 1.35;
+  }
+
+  body.lab-mode .lab-fields ul {
+    padding-left: 16px;
   }
 
   .lab-result .secondary,

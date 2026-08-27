@@ -58,7 +58,7 @@
         </div>
         <div class="lab-head">
           <h2 data-i18n="labHeadline">配方实验室</h2>
-          <p data-i18n="labIntro">三款活动限定特调先不命名。先看口味和场景，默认都是无醇；想要含醇可以按建议自己 DIY，也欢迎提交你的命名想法。</p>
+          <p data-i18n="labIntro">三款活动限定特调先不命名。先看口味和配方，三款都是无醇；想要含醇可自行 DIY。</p>
         </div>
         <div class="mix-list" id="mixList"></div>
       </section>
@@ -83,10 +83,6 @@
     const requestedMix = (params.get("mix") || "").toUpperCase();
     let selectedMixId = data.eventMixes.some((mix) => mix.id === requestedMix) ? requestedMix : "";
     let mode = params.get("tab") === "lab" || selectedMixId ? "lab" : "order";
-    const mixState = data.eventMixes.reduce((state, mix) => {
-      state[mix.id] = { variant: "zero", ratio: mix.ratios[1]?.value || mix.ratios[0].value, name: "", spin: 0 };
-      return state;
-    }, {});
 
     function t(key) {
       return data.copy[draft.lang || "zh"][key];
@@ -119,13 +115,11 @@
         ? data.eventMixes.filter((mix) => mix.id === selectedMixId)
         : data.eventMixes;
       mixListEl.innerHTML = visibleMixes.map((mix) => {
-        const state = mixState[mix.id];
-        const formula = mix.formulas[state.variant][lang];
+        const formula = mix.formulas.zero[lang];
         const flavors = lang === "zh" ? mix.flavorZh : mix.flavorEn;
         const hint = lang === "zh" ? mix.hintZh : mix.hintEn;
         const color = lang === "zh" ? mix.colorZh : mix.colorEn;
-        const scene = lang === "zh" ? mix.sceneZh : mix.sceneEn;
-        const generatedName = state.name || data.generateMixName(mix, lang, state.ratio, state.variant, state.spin);
+        const diyNote = lang === "zh" ? mix.diyZh : mix.diyEn;
         return `
           <article class="mix-card" data-mix="${mix.id}">
             <div class="mix-code">${mix.id}</div>
@@ -138,33 +132,13 @@
               </div>
               <div class="lab-fields">
                 <div>
-                  <p class="field-label">${t("labScene")}</p>
-                  <p>${scene}</p>
-                </div>
-                <div>
                   <p class="field-label">${t("labFormula")}</p>
                   <ul>${formula.map((item) => `<li>${item}</li>`).join("")}</ul>
                 </div>
-              </div>
-              <div class="lab-controls">
-                <div class="segmented" role="group" aria-label="${t("labNoAlcohol")} / ${t("labWithAlcohol")}">
-                  <button type="button" class="${state.variant === "zero" ? "active" : ""}" data-variant="zero">${t("labNoAlcohol")}</button>
-                  <button type="button" class="${state.variant === "alcohol" ? "active" : ""}" data-variant="alcohol">${t("labWithAlcohol")}</button>
-                </div>
-                <label>
-                  <span>${t("labRatio")}</span>
-                  <select data-ratio>
-                    ${mix.ratios.map((ratio) => `<option value="${ratio.value}" ${ratio.value === state.ratio ? "selected" : ""}>${lang === "zh" ? ratio.zh : ratio.en}</option>`).join("")}
-                  </select>
-                </label>
-              </div>
-              <div class="lab-result">
                 <div>
-                  <p class="field-label">${t("labName")}</p>
-                  <strong>${generatedName}</strong>
+                  <p class="field-label">${t("labDiy")}</p>
+                  <p>${diyNote}</p>
                 </div>
-                <button class="secondary" type="button" data-generate-name>${t("labGenerate")}</button>
-                <button class="primary compact" type="button" data-show-mix>${t("labShow")}</button>
               </div>
             </div>
           </article>
@@ -258,40 +232,6 @@
       const modeButton = event.target.closest("[data-mode]");
       if (!modeButton) return;
       setMode(modeButton.dataset.mode);
-    });
-
-    mixListEl.addEventListener("click", (event) => {
-      const card = event.target.closest("[data-mix]");
-      if (!card) return;
-      const mix = data.eventMixes.find((item) => item.id === card.dataset.mix);
-      const state = mixState[card.dataset.mix];
-      const variantButton = event.target.closest("[data-variant]");
-      if (variantButton) {
-        state.variant = variantButton.dataset.variant;
-        renderLab();
-        return;
-      }
-      if (event.target.closest("[data-generate-name]")) {
-        state.spin += 1;
-        state.name = data.generateMixName(mix, draft.lang || "zh", state.ratio, state.variant, state.spin);
-        renderLab();
-        return;
-      }
-      if (event.target.closest("[data-show-mix]")) {
-        state.name = state.name || data.generateMixName(mix, draft.lang || "zh", state.ratio, state.variant, state.spin);
-        showToast(`${t("labOrderPrefix")}${mix.id} · ${state.name}`);
-      }
-    });
-
-    mixListEl.addEventListener("change", (event) => {
-      const ratio = event.target.closest("[data-ratio]");
-      if (!ratio) return;
-      const card = event.target.closest("[data-mix]");
-      if (!card) return;
-      mixState[card.dataset.mix].ratio = ratio.value;
-      mixState[card.dataset.mix].name = "";
-      mixState[card.dataset.mix].spin = 0;
-      renderLab();
     });
 
     document.querySelector(".lang").addEventListener("pointerup", (event) => {

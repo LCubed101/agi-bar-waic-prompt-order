@@ -35,17 +35,11 @@
       tabOrder: "点单",
       tabLab: "配方实验室",
       labHeadline: "配方实验室",
-      labIntro: "三款活动限定特调先不命名。先看口味和场景，默认都是无醇；想要含醇可以按建议自己 DIY，也欢迎提交你的命名想法。",
+      labIntro: "三款活动限定特调先不命名。先看口味和配方，三款都是无醇；想要含醇可自行 DIY。",
       labTerminal: "选择一款",
-      labNoAlcohol: "无醇出品",
-      labWithAlcohol: "含醇 DIY",
       labFlavor: "口味",
-      labScene: "适合",
       labFormula: "配方",
-      labRatio: "比例",
-      labName: "命名想法",
-      labGenerate: "换个想法",
-      labShow: "给吧台看",
+      labDiy: "DIY",
       labOrderPrefix: "编号 ",
       labSaved: "已生成，直接给吧台看编号。"
     },
@@ -84,17 +78,11 @@
       tabOrder: "Order",
       tabLab: "Recipe Lab",
       labHeadline: "Recipe Lab",
-      labIntro: "Three event-only mixes stay unnamed for now. The default serve is no alcohol; choose the DIY option if you want to add alcohol, and submit your naming idea.",
+      labIntro: "Three event-only mixes stay unnamed for now. Start with flavor and formula. All three are no alcohol; add your own DIY twist if you want.",
       labTerminal: "choose one",
-      labNoAlcohol: "No alcohol serve",
-      labWithAlcohol: "Alcohol DIY",
       labFlavor: "Profile",
-      labScene: "Best for",
       labFormula: "Formula",
-      labRatio: "Ratio",
-      labName: "Naming idea",
-      labGenerate: "Try Another",
-      labShow: "Show to Bar",
+      labDiy: "DIY",
       labOrderPrefix: "Code ",
       labSaved: "Ready. Show this code to the bar."
     }
@@ -193,6 +181,8 @@
           en: ["Start from the no alcohol serve", "DIY add sparkling base 30ml if wanted", "Top with soda or Sprite", "Lemon slice"]
         }
       },
+      diyZh: "如需含醇，请在无醇版本基础上自行 DIY。",
+      diyEn: "No alcohol by default. Add your own DIY twist if preferred.",
       ratios: [
         { value: "light", zh: "更轻：蓝柑 5ml", en: "lighter: syrup 5ml" },
         { value: "standard", zh: "标准：蓝柑 10ml", en: "standard: syrup 10ml" },
@@ -221,6 +211,8 @@
           en: ["Start from the no alcohol serve", "Full ice", "DIY add a small base if wanted", "Lemon juice 5ml", "Slow-pour the blue layer"]
         }
       },
+      diyZh: "如需含醇，请在无醇版本基础上自行 DIY。",
+      diyEn: "No alcohol by default. Add your own DIY twist if preferred.",
       ratios: [
         { value: "fresh", zh: "更酸：柠檬 8ml", en: "brighter: lemon 8ml" },
         { value: "standard", zh: "标准：柠檬 5ml", en: "standard: lemon 5ml" },
@@ -249,6 +241,8 @@
           en: ["Start from the no alcohol serve", "Full old ice", "DIY add a small base if wanted", "Slow-pour espresso 40ml"]
         }
       },
+      diyZh: "如需含醇，请在无醇版本基础上自行 DIY。",
+      diyEn: "No alcohol by default. Add your own DIY twist if preferred.",
       ratios: [
         { value: "bright", zh: "更亮：苹果更多", en: "brighter: more apple" },
         { value: "standard", zh: "标准：苹果 40ml", en: "standard: apple 40ml" },
