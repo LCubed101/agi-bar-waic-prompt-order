@@ -79,7 +79,10 @@
     const statusEl = $("#status");
     const toastEl = $("#toast");
     const mixListEl = $("#mixList");
-    let mode = new URLSearchParams(window.location.search).get("tab") === "lab" ? "lab" : "order";
+    const params = new URLSearchParams(window.location.search);
+    const requestedMix = (params.get("mix") || "").toUpperCase();
+    let selectedMixId = data.eventMixes.some((mix) => mix.id === requestedMix) ? requestedMix : "";
+    let mode = params.get("tab") === "lab" || selectedMixId ? "lab" : "order";
     const mixState = data.eventMixes.reduce((state, mix) => {
       state[mix.id] = { variant: "zero", ratio: mix.ratios[1]?.value || mix.ratios[0].value, name: "", spin: 0 };
       return state;
@@ -112,7 +115,10 @@
 
     function renderLab() {
       const lang = draft.lang || "zh";
-      mixListEl.innerHTML = data.eventMixes.map((mix) => {
+      const visibleMixes = selectedMixId
+        ? data.eventMixes.filter((mix) => mix.id === selectedMixId)
+        : data.eventMixes;
+      mixListEl.innerHTML = visibleMixes.map((mix) => {
         const state = mixState[mix.id];
         const formula = mix.formulas[state.variant][lang];
         const flavors = lang === "zh" ? mix.flavorZh : mix.flavorEn;
@@ -207,7 +213,11 @@
       mode = nextMode;
       const nextUrl = new URL(window.location.href);
       if (mode === "lab") nextUrl.searchParams.set("tab", "lab");
-      else nextUrl.searchParams.delete("tab");
+      else {
+        nextUrl.searchParams.delete("tab");
+        nextUrl.searchParams.delete("mix");
+        selectedMixId = "";
+      }
       window.history.replaceState(null, "", nextUrl);
       renderCopy();
     }
