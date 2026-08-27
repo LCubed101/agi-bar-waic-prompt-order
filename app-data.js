@@ -3,9 +3,9 @@
     zh: {
       tagline: "值得一见的人，总在 AGI Bar",
       headline: "Prompt 点单",
-      intro: "写一句、打一句，或点几个关键词，生成你的 WAIC 专属推荐。端起这一杯，卸下防御，真实的社交才真正开始。",
+      intro: "看不懂菜单也没关系。写一句，或点几个关键词，生成今晚的点单；也可以进配方实验室，调一杯自己的版本。",
       terminal: "一句话输入",
-      placeholder: "比如：刚从 WAIC 出来，想要一杯清爽、有上海感、适合聊天的。",
+      placeholder: "比如：刚到现场，想要一杯清爽、适合聊天、不要太重的。",
       generate: "生成我的点单",
       clear: "清空",
       back: "重新选择",
@@ -31,15 +31,31 @@
       groupIdentity: "身份",
       groupMood: "心情",
       groupWant: "今晚想要",
-      groupOccasion: "场景"
+      groupOccasion: "场景",
+      tabOrder: "点单",
+      tabLab: "配方实验室",
+      labHeadline: "配方实验室",
+      labIntro: "三款活动限定特调不直接公布名字。先看口味和场景，选无醇或含醇，再生成你的专属名称。",
+      labTerminal: "选择一款",
+      labNoAlcohol: "无醇",
+      labWithAlcohol: "含醇",
+      labFlavor: "口味",
+      labScene: "适合",
+      labFormula: "配方",
+      labRatio: "比例",
+      labName: "专属名称",
+      labGenerate: "生成名称",
+      labShow: "给吧台看",
+      labOrderPrefix: "编号 ",
+      labSaved: "已生成，直接给吧台看编号。"
     },
     en: {
       tagline: "People Worth Meeting Are Always at AGI Bar",
-      headline: "Prompt Your Pour",
-      intro: "Type a sentence or tap a few keywords. AGI Bar will generate one drink for your WAIC night.",
+      headline: "Prompt Your Order",
+      intro: "No need to decode the menu. Type a sentence or tap a few keywords, then get one clear order for tonight.",
       terminal: "one sentence in",
-      placeholder: "Example: I just came from WAIC and want something refreshing, social, and Shanghai.",
-      generate: "Prompt My Pour",
+      placeholder: "Example: I just arrived and want something refreshing, social, and not too heavy.",
+      generate: "Prompt My Order",
       clear: "Clear",
       back: "Choose Again",
       resultLabel: "Your drink",
@@ -64,7 +80,23 @@
       groupIdentity: "I am",
       groupMood: "Mood",
       groupWant: "I want",
-      groupOccasion: "Occasion"
+      groupOccasion: "Occasion",
+      tabOrder: "Order",
+      tabLab: "Recipe Lab",
+      labHeadline: "Recipe Lab",
+      labIntro: "Three event-only mixes stay unnamed on the sign. Pick a profile, choose no alcohol or with alcohol, then generate your own name.",
+      labTerminal: "choose one",
+      labNoAlcohol: "No alcohol",
+      labWithAlcohol: "With alcohol",
+      labFlavor: "Profile",
+      labScene: "Best for",
+      labFormula: "Formula",
+      labRatio: "Ratio",
+      labName: "Generated name",
+      labGenerate: "Generate Name",
+      labShow: "Show to Bar",
+      labOrderPrefix: "Code ",
+      labSaved: "Ready. Show this code to the bar."
     }
   };
 
@@ -115,7 +147,7 @@
       key: "occasion",
       title: "groupOccasion",
       options: [
-        ["waic", "WAIC 之后", "After WAIC"],
+        ["waic", "到场之后", "After arrival"],
         ["investors", "见投资人", "Meeting investors"],
         ["friends", "朋友叙旧", "Catching up with friends"],
         ["first", "今晚第一杯", "First drink of the night"],
@@ -138,6 +170,93 @@
     { id: 7, zh: "妥妥拿下", en: "Nailed It", base: "大米拉格", flavorZh: ["顺口", "干爽", "可靠"], flavorEn: ["crisp", "dry", "reliable"], tags: ["relaxed", "friends", "first", "lowkey", "engineer", "refreshing"], reasonZh: "不需要复杂理由，今晚这一杯就是稳。", reasonEn: "No complicated reasoning needed. This one simply works." },
     { id: 8, zh: "绝不糊弄", en: "No Fluff", base: "青提乌龙西打", flavorZh: ["茶感", "青提", "清醒"], flavorEn: ["oolong", "grape", "clear"], tags: ["refreshing", "researcher", "engineer", "lowabv", "tired", "waic"], reasonZh: "适合听了一天宏大叙事之后，来点清醒、诚实、好喝的。", reasonEn: "After a day of grand narratives, this stays clear, honest, and drinkable." },
     { id: 9, zh: "肯定没错", en: "Can’t Go Wrong", base: "澳红酸角", flavorZh: ["酸甜", "热带", "安心"], flavorEn: ["sweet-tart", "tropical", "safe bet"], tags: ["firstShanghai", "shanghai", "surprising", "friends", "last", "social"], reasonZh: "适合第一次来、还没决定今晚走向，但想先点对的人。", reasonEn: "For starting right when you do not yet know where the night is going." }
+  ];
+
+  const eventMixes = [
+    {
+      id: "A",
+      hintZh: "刚充值，下一秒免费",
+      hintEn: "You subscribed. Then it became free.",
+      colorZh: "蓝白渐变",
+      colorEn: "blue-white gradient",
+      flavorZh: ["清爽", "气泡", "椰子水", "柠檬"],
+      flavorEn: ["refreshing", "sparkling", "coconut water", "lemon"],
+      sceneZh: "适合刚到场、想轻松开场的人。",
+      sceneEn: "For arriving, easing in, and starting light.",
+      formulas: {
+        zero: {
+          zh: ["蓝柑糖浆 5-15ml", "椰子水 30ml", "气泡水或雪碧补满", "柠檬片"],
+          en: ["Blue curacao syrup 5-15ml", "Coconut water 30ml", "Top with soda or Sprite", "Lemon slice"]
+        },
+        alcohol: {
+          zh: ["蓝柑糖浆 5-15ml", "起泡 30ml", "气泡水或雪碧补满", "柠檬片"],
+          en: ["Blue curacao syrup 5-15ml", "Sparkling base 30ml", "Top with soda or Sprite", "Lemon slice"]
+        }
+      },
+      ratios: [
+        { value: "light", zh: "更轻：蓝柑 5ml", en: "lighter: syrup 5ml" },
+        { value: "standard", zh: "标准：蓝柑 10ml", en: "standard: syrup 10ml" },
+        { value: "sweet", zh: "更甜：蓝柑 15ml", en: "sweeter: syrup 15ml" }
+      ],
+      nameBitsZh: ["等等", "免费", "蓝屏", "胜利", "续费", "泡泡"],
+      nameBitsEn: ["Waitlist", "Free", "Blue", "Victory", "Renewal", "Bubble"]
+    },
+    {
+      id: "B",
+      hintZh: "能力涨了，账单也醒了",
+      hintEn: "The model got stronger. The bill woke up.",
+      colorZh: "粉底蓝顶分层",
+      colorEn: "pink base, blue top",
+      flavorZh: ["芭乐青提", "苏打", "柠檬", "分层"],
+      flavorEn: ["guava grape", "soda", "lemon", "layered"],
+      sceneZh: "适合想要视觉记忆点、正在社交的人。",
+      sceneEn: "For a visual hook and active conversations.",
+      formulas: {
+        zero: {
+          zh: ["芭乐青提 90ml", "满冰", "苏打水 90ml + 蓝柑少量混合", "柠檬汁 5ml", "蓝色层缓慢倒满"],
+          en: ["Guava grape 90ml", "Full ice", "Soda 90ml with a small blue syrup mix", "Lemon juice 5ml", "Slow-pour the blue layer"]
+        },
+        alcohol: {
+          zh: ["芭乐青提 90ml", "满冰", "含醇蓝色层由吧台处理", "柠檬汁 5ml", "蓝色层缓慢倒满"],
+          en: ["Guava grape 90ml", "Full ice", "Bar-prepped blue layer", "Lemon juice 5ml", "Slow-pour the blue layer"]
+        }
+      },
+      ratios: [
+        { value: "fresh", zh: "更酸：柠檬 8ml", en: "brighter: lemon 8ml" },
+        { value: "standard", zh: "标准：柠檬 5ml", en: "standard: lemon 5ml" },
+        { value: "visual", zh: "更分层：蓝色层慢倒", en: "more layered: slower blue pour" }
+      ],
+      nameBitsZh: ["账单", "刺痛", "粉蓝", "沉默", "暴击", "额度"],
+      nameBitsEn: ["Invoice", "Sting", "Pink Blue", "Silence", "Critical", "Quota"]
+    },
+    {
+      id: "C",
+      hintZh: "没中签，也要有上岸的仪式感",
+      hintEn: "No allocation, still a landing ritual.",
+      colorZh: "琥珀金",
+      colorEn: "amber gold",
+      flavorZh: ["菠萝", "苏打", "咖啡", "冰感"],
+      flavorEn: ["pineapple", "soda", "coffee", "ice"],
+      sceneZh: "适合庆祝、收尾，或想要更强记忆点的人。",
+      sceneEn: "For celebration, closing the night, or a stronger finish.",
+      formulas: {
+        zero: {
+          zh: ["100% 菠萝汁 40ml", "满杯老冰块", "冰镇含糖苏打水补足", "浓缩咖啡液 40ml 慢倒"],
+          en: ["100% pineapple juice 40ml", "Full old ice", "Top with chilled sweet soda", "Slow-pour espresso 40ml"]
+        },
+        alcohol: {
+          zh: ["菠萝汁 40ml", "满杯老冰块", "含醇版本由吧台确认", "浓缩咖啡液 40ml 慢倒"],
+          en: ["Pineapple juice 40ml", "Full old ice", "Bar-confirmed alcohol version", "Slow-pour espresso 40ml"]
+        }
+      },
+      ratios: [
+        { value: "bright", zh: "更亮：菠萝更多", en: "brighter: more pineapple" },
+        { value: "standard", zh: "标准：菠萝 40ml", en: "standard: pineapple 40ml" },
+        { value: "deep", zh: "更深：咖啡更重", en: "deeper: more coffee" }
+      ],
+      nameBitsZh: ["上岸", "金线", "心跳", "浮盈", "翻倍", "琥珀"],
+      nameBitsEn: ["Landing", "Goldline", "Heartbeat", "Profit", "Double", "Amber"]
+    }
   ];
 
   const storageKeys = {
@@ -258,10 +377,20 @@
     return `"${String(value ?? "").replaceAll('"', '""')}"`;
   }
 
+  function generateMixName(mix, lang, ratioValue, variant, spin = 0) {
+    const bits = lang === "zh" ? mix.nameBitsZh : mix.nameBitsEn;
+    const ratioIndex = mix.ratios.findIndex((item) => item.value === ratioValue);
+    const offset = variant === "alcohol" ? 2 : 0;
+    const first = bits[(ratioIndex + offset + spin + bits.length) % bits.length];
+    const second = bits[(ratioIndex + offset + spin + 3 + bits.length) % bits.length];
+    return lang === "zh" ? `${first}${second}` : `${first} ${second}`;
+  }
+
   window.AGIBarData = {
     copy,
     groups,
     drinks,
+    eventMixes,
     storageKeys,
     chooseDrink,
     loadDraft,
@@ -271,6 +400,7 @@
     getChipLabel,
     countBy,
     extractWords,
-    csvCell
+    csvCell,
+    generateMixName
   };
 })();

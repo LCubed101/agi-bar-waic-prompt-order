@@ -177,6 +177,41 @@ button {
   margin: 0;
 }
 
+.mode-tabs {
+  display: inline-flex;
+  gap: 6px;
+  margin-top: 22px;
+  padding: 5px;
+  border: 1px solid var(--line-soft);
+  background: rgba(0, 0, 0, 0.22);
+  border-radius: 999px;
+}
+
+.mode-tabs button {
+  min-height: 48px;
+  min-width: 112px;
+  border: 0;
+  border-radius: 999px;
+  padding: 0 18px;
+  color: var(--muted);
+  background: transparent;
+  font-weight: 850;
+  touch-action: manipulation;
+}
+
+.mode-tabs button.active {
+  color: #17110c;
+  background: var(--gold);
+}
+
+.mode-panel {
+  display: none;
+}
+
+.mode-panel.active {
+  display: block;
+}
+
 .prompt-card,
 .order-card,
 .menu-photo,
@@ -190,6 +225,11 @@ button {
 
 .prompt-card {
   padding: clamp(18px, 2.4vw, 26px);
+}
+
+.lab-panel {
+  max-height: calc(100vh - 128px);
+  overflow: auto;
 }
 
 .terminal-line,
@@ -381,6 +421,185 @@ textarea::placeholder {
   color: var(--muted);
   font-size: 14px;
   background: rgba(0, 0, 0, 0.18);
+}
+
+.lab-head {
+  margin-top: 16px;
+}
+
+.lab-head h2 {
+  margin: 0;
+  color: var(--foam);
+  font-size: clamp(34px, 4vw, 54px);
+  line-height: 1;
+}
+
+.lab-head p {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.mix-list {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.mix-card {
+  display: grid;
+  grid-template-columns: 74px 1fr;
+  gap: 14px;
+  padding: 14px;
+  border: 1px solid var(--line-soft);
+  background:
+    linear-gradient(90deg, rgba(244, 163, 64, 0.08) 1px, transparent 1px),
+    rgba(0, 0, 0, 0.18);
+  background-size: 28px 28px, auto;
+  border-radius: var(--radius);
+}
+
+.mix-code {
+  min-height: 74px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.26);
+  color: var(--gold);
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 42px;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.mix-content {
+  min-width: 0;
+}
+
+.mix-hint {
+  margin: 0 0 6px;
+  color: var(--cyan);
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 13px;
+}
+
+.mix-card h3 {
+  margin: 0;
+  color: var(--foam);
+  font-size: clamp(30px, 4vw, 48px);
+  line-height: 0.98;
+}
+
+.mix-pills {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.lab-fields {
+  display: grid;
+  grid-template-columns: 0.82fr 1.18fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.lab-fields > div {
+  border: 1px solid rgba(194, 118, 69, 0.26);
+  background: rgba(0, 0, 0, 0.16);
+  padding: 10px;
+  border-radius: var(--radius);
+}
+
+.field-label {
+  margin: 0 0 6px;
+  color: var(--gold);
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.lab-fields p:not(.field-label),
+.lab-fields ul {
+  margin: 0;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.lab-fields ul {
+  padding-left: 18px;
+}
+
+.lab-controls,
+.lab-result {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.segmented {
+  display: inline-flex;
+  padding: 4px;
+  border: 1px solid var(--line-soft);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.segmented button {
+  min-height: 40px;
+  min-width: 76px;
+  border: 0;
+  border-radius: 999px;
+  padding: 0 12px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 850;
+}
+
+.segmented button.active {
+  background: var(--gold);
+  color: #17110c;
+}
+
+.lab-controls label {
+  display: grid;
+  gap: 5px;
+  min-width: min(260px, 100%);
+  color: var(--muted);
+  font-size: 12px;
+  font-family: "SFMono-Regular", Consolas, monospace;
+}
+
+.lab-controls select {
+  min-height: 42px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  padding: 0 10px;
+  color: var(--text);
+  background: #17120f;
+  font: inherit;
+}
+
+.lab-result {
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid rgba(194, 118, 69, 0.24);
+}
+
+.lab-result strong {
+  display: block;
+  color: var(--foam);
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.primary.compact {
+  flex: 0 0 auto;
 }
 
 .reason {
@@ -616,6 +835,10 @@ textarea::placeholder {
     font-size: 17px;
   }
 
+  .mode-tabs {
+    margin-top: 16px;
+  }
+
   textarea {
     min-height: 92px;
   }
@@ -624,6 +847,25 @@ textarea::placeholder {
     grid-template-columns: 1fr 1fr;
     gap: 12px 14px;
     margin-top: 12px;
+  }
+
+  .lab-panel {
+    max-height: none;
+  }
+
+  .mix-card {
+    grid-template-columns: 62px 1fr;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .mix-code {
+    min-height: 62px;
+    font-size: 34px;
+  }
+
+  .lab-fields {
+    grid-template-columns: 1fr 1fr;
   }
 
   .group h2 {
@@ -682,6 +924,16 @@ textarea::placeholder {
     max-width: 12ch;
   }
 
+  .mode-tabs {
+    display: flex;
+    width: 100%;
+  }
+
+  .mode-tabs button {
+    min-width: 0;
+    flex: 1 1 0;
+  }
+
   .prompt-card,
   .order-card {
     border-left: 0;
@@ -707,6 +959,24 @@ textarea::placeholder {
 
   .summary-grid {
     grid-template-columns: 1fr;
+  }
+
+  .lab-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .mix-card {
+    grid-template-columns: 1fr;
+  }
+
+  .mix-code {
+    width: 72px;
+  }
+
+  .lab-result .secondary,
+  .lab-result .primary {
+    width: 100%;
+    flex: 1 1 100%;
   }
 
   .summary-head {

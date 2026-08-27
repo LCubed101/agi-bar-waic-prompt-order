@@ -12,7 +12,7 @@
       <div class="brand">
         <div class="mark">AGI</div>
         <div>
-          <p class="brand-title">AGI Bar // WAIC</p>
+          <p class="brand-title">AGI Bar // 0829</p>
           <p class="brand-sub" data-i18n="tagline">值得一见的人，总在 AGI Bar</p>
         </div>
       </div>
@@ -25,17 +25,21 @@
     <main class="prompt-main">
       <section aria-labelledby="page-title">
         <h1 id="page-title" class="headline zh" data-i18n="headline">Prompt 点单</h1>
-        <p class="intro" data-i18n="intro">写一句、打一句，或点几个关键词，生成你的 WAIC 专属推荐。端起这一杯，卸下防御，真实的社交才真正开始。</p>
+        <p class="intro" data-i18n="intro">看不懂菜单也没关系。写一句，或点几个关键词，生成今晚的点单；也可以进配方实验室，调一杯自己的版本。</p>
+        <div class="mode-tabs" aria-label="Mode">
+          <button type="button" class="active" data-mode="order" data-i18n="tabOrder">点单</button>
+          <button type="button" data-mode="lab" data-i18n="tabLab">配方实验室</button>
+        </div>
       </section>
 
-      <section class="prompt-card" aria-label="Prompt order">
+      <section class="prompt-card mode-panel active" id="orderPanel" aria-label="Prompt order">
         <div class="terminal-line">
           <span><b>agibar@waic</b> ~ % cat your_mood</span>
           <span data-i18n="terminal">一句话输入</span>
         </div>
 
         <div class="input-wrap">
-          <textarea id="prompt" data-i18n-placeholder="placeholder" placeholder="比如：刚从 WAIC 出来，想要一杯清爽、有上海感、适合聊天的。"></textarea>
+          <textarea id="prompt" data-i18n-placeholder="placeholder" placeholder="比如：刚到现场，想要一杯清爽、适合聊天、不要太重的。"></textarea>
         </div>
         <div class="status" id="status" aria-live="polite"></div>
 
@@ -45,6 +49,18 @@
           <button class="primary" type="button" id="generate" data-i18n="generate">生成我的点单</button>
           <button class="secondary" type="button" id="clear" data-i18n="clear">清空</button>
         </div>
+      </section>
+
+      <section class="prompt-card lab-panel mode-panel" id="labPanel" aria-label="Recipe lab">
+        <div class="terminal-line">
+          <span><b>agibar@0829</b> ~ % ./recipe_lab</span>
+          <span data-i18n="labTerminal">选择一款</span>
+        </div>
+        <div class="lab-head">
+          <h2 data-i18n="labHeadline">配方实验室</h2>
+          <p data-i18n="labIntro">三款活动限定特调不直接公布名字。先看口味和场景，选无醇或含醇，再生成你的专属名称。</p>
+        </div>
+        <div class="mix-list" id="mixList"></div>
       </section>
     </main>
   </div>
@@ -62,6 +78,12 @@
     const groupsEl = $("#groups");
     const statusEl = $("#status");
     const toastEl = $("#toast");
+    const mixListEl = $("#mixList");
+    let mode = new URLSearchParams(window.location.search).get("tab") === "lab" ? "lab" : "order";
+    const mixState = data.eventMixes.reduce((state, mix) => {
+      state[mix.id] = { variant: "zero", ratio: mix.ratios[1]?.value || mix.ratios[0].value, name: "", spin: 0 };
+      return state;
+    }, {});
 
     function t(key) {
       return data.copy[draft.lang || "zh"][key];
@@ -88,10 +110,66 @@
       `).join("");
     }
 
+    function renderLab() {
+      const lang = draft.lang || "zh";
+      mixListEl.innerHTML = data.eventMixes.map((mix) => {
+        const state = mixState[mix.id];
+        const formula = mix.formulas[state.variant][lang];
+        const flavors = lang === "zh" ? mix.flavorZh : mix.flavorEn;
+        const hint = lang === "zh" ? mix.hintZh : mix.hintEn;
+        const color = lang === "zh" ? mix.colorZh : mix.colorEn;
+        const scene = lang === "zh" ? mix.sceneZh : mix.sceneEn;
+        const generatedName = state.name || data.generateMixName(mix, lang, state.ratio, state.variant, state.spin);
+        return `
+          <article class="mix-card" data-mix="${mix.id}">
+            <div class="mix-code">${mix.id}</div>
+            <div class="mix-content">
+              <p class="mix-hint">${hint}</p>
+              <h3>${t("labOrderPrefix")}${mix.id}</h3>
+              <div class="mix-pills">
+                <span class="pill">${color}</span>
+                ${flavors.map((item) => `<span class="pill">${item}</span>`).join("")}
+              </div>
+              <div class="lab-fields">
+                <div>
+                  <p class="field-label">${t("labScene")}</p>
+                  <p>${scene}</p>
+                </div>
+                <div>
+                  <p class="field-label">${t("labFormula")}</p>
+                  <ul>${formula.map((item) => `<li>${item}</li>`).join("")}</ul>
+                </div>
+              </div>
+              <div class="lab-controls">
+                <div class="segmented" role="group" aria-label="${t("labNoAlcohol")} / ${t("labWithAlcohol")}">
+                  <button type="button" class="${state.variant === "zero" ? "active" : ""}" data-variant="zero">${t("labNoAlcohol")}</button>
+                  <button type="button" class="${state.variant === "alcohol" ? "active" : ""}" data-variant="alcohol">${t("labWithAlcohol")}</button>
+                </div>
+                <label>
+                  <span>${t("labRatio")}</span>
+                  <select data-ratio>
+                    ${mix.ratios.map((ratio) => `<option value="${ratio.value}" ${ratio.value === state.ratio ? "selected" : ""}>${lang === "zh" ? ratio.zh : ratio.en}</option>`).join("")}
+                  </select>
+                </label>
+              </div>
+              <div class="lab-result">
+                <div>
+                  <p class="field-label">${t("labName")}</p>
+                  <strong>${generatedName}</strong>
+                </div>
+                <button class="secondary" type="button" data-generate-name>${t("labGenerate")}</button>
+                <button class="primary compact" type="button" data-show-mix>${t("labShow")}</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
     function renderCopy() {
       const lang = draft.lang || "zh";
       document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
-      document.title = lang === "zh" ? "Prompt 点单 | AGI Bar" : "Prompt Your Pour | AGI Bar";
+      document.title = lang === "zh" ? "Prompt 点单 | AGI Bar" : "Prompt Your Order | AGI Bar";
       document.querySelectorAll("[data-i18n]").forEach((node) => {
         node.textContent = t(node.dataset.i18n);
       });
@@ -101,8 +179,15 @@
       document.querySelectorAll("[data-lang]").forEach((button) => {
         button.classList.toggle("active", button.dataset.lang === lang);
       });
+      document.querySelectorAll("[data-mode]").forEach((button) => {
+        button.classList.toggle("active", button.dataset.mode === mode);
+      });
+      document.querySelectorAll(".mode-panel").forEach((panel) => {
+        panel.classList.toggle("active", panel.id === `${mode}Panel`);
+      });
       $("#page-title").classList.toggle("zh", lang === "zh");
       renderGroups();
+      renderLab();
     }
 
     function setStatus(message, isError = false) {
@@ -114,6 +199,16 @@
       toastEl.textContent = message;
       toastEl.classList.add("show");
       window.setTimeout(() => toastEl.classList.remove("show"), 1600);
+    }
+
+    function setMode(nextMode) {
+      if (!nextMode || mode === nextMode) return;
+      mode = nextMode;
+      const nextUrl = new URL(window.location.href);
+      if (mode === "lab") nextUrl.searchParams.set("tab", "lab");
+      else nextUrl.searchParams.delete("tab");
+      window.history.replaceState(null, "", nextUrl);
+      renderCopy();
     }
 
     function generate() {
@@ -146,6 +241,46 @@
       else selected.add(value);
       renderGroups();
       persist();
+    });
+
+    document.addEventListener("click", (event) => {
+      const modeButton = event.target.closest("[data-mode]");
+      if (!modeButton) return;
+      setMode(modeButton.dataset.mode);
+    });
+
+    mixListEl.addEventListener("click", (event) => {
+      const card = event.target.closest("[data-mix]");
+      if (!card) return;
+      const mix = data.eventMixes.find((item) => item.id === card.dataset.mix);
+      const state = mixState[card.dataset.mix];
+      const variantButton = event.target.closest("[data-variant]");
+      if (variantButton) {
+        state.variant = variantButton.dataset.variant;
+        renderLab();
+        return;
+      }
+      if (event.target.closest("[data-generate-name]")) {
+        state.spin += 1;
+        state.name = data.generateMixName(mix, draft.lang || "zh", state.ratio, state.variant, state.spin);
+        renderLab();
+        return;
+      }
+      if (event.target.closest("[data-show-mix]")) {
+        state.name = state.name || data.generateMixName(mix, draft.lang || "zh", state.ratio, state.variant, state.spin);
+        showToast(`${t("labOrderPrefix")}${mix.id} · ${state.name}`);
+      }
+    });
+
+    mixListEl.addEventListener("change", (event) => {
+      const ratio = event.target.closest("[data-ratio]");
+      if (!ratio) return;
+      const card = event.target.closest("[data-mix]");
+      if (!card) return;
+      mixState[card.dataset.mix].ratio = ratio.value;
+      mixState[card.dataset.mix].name = "";
+      mixState[card.dataset.mix].spin = 0;
+      renderLab();
     });
 
     document.querySelector(".lang").addEventListener("pointerup", (event) => {
