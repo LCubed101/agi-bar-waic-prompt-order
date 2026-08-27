@@ -906,11 +906,32 @@ textarea::placeholder {
 
 @media (max-width: 899px) {
   .topbar {
-    align-items: flex-start;
+    align-items: center;
+    padding: 12px;
   }
 
   .brand-sub {
-    max-width: 220px;
+    display: none;
+  }
+
+  .brand-title {
+    font-size: 13px;
+  }
+
+  .mark {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+
+  .lang {
+    padding: 4px;
+  }
+
+  .lang button {
+    min-width: 52px;
+    min-height: 42px;
+    padding: 10px 12px;
   }
 
   .prompt-main,
@@ -920,13 +941,32 @@ textarea::placeholder {
   }
 
   .headline {
-    font-size: clamp(44px, 14vw, 76px);
-    max-width: 12ch;
+    font-size: clamp(34px, 11vw, 52px);
+    max-width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .headline.zh {
+    max-width: 100%;
+  }
+
+  .intro {
+    font-size: 16px;
+    line-height: 1.45;
   }
 
   .mode-tabs {
     display: flex;
     width: 100%;
+    margin-top: 14px;
+  }
+
+  body.lab-mode .prompt-main > section:first-child {
+    padding-bottom: 0;
+  }
+
+  body.lab-mode .intro {
+    display: none;
   }
 
   .mode-tabs button {
@@ -939,6 +979,18 @@ textarea::placeholder {
     border-left: 0;
     border-right: 0;
     border-radius: 0;
+  }
+
+  .terminal-line {
+    font-size: 12px;
+  }
+
+  .lab-head h2 {
+    font-size: 34px;
+  }
+
+  .lab-head p {
+    font-size: 14px;
   }
 
   .order-card {

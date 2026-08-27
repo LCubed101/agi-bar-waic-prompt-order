@@ -1,6 +1,6 @@
-# AGI Bar WAIC Prompt Order
+# AGI Bar prompt-order
 
-Static bilingual prompt-to-drink ordering page for AGI Bar during WAIC.
+Static bilingual prompt-ordering page for AGI Bar events.
 
 ## Pages
 

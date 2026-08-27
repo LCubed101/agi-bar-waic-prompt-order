@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Prompt 点单 | AGI Bar</title>
+  <title>prompt-order | AGI Bar</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -24,7 +24,7 @@
 
     <main class="prompt-main">
       <section aria-labelledby="page-title">
-        <h1 id="page-title" class="headline zh" data-i18n="headline">Prompt 点单</h1>
+        <h1 id="page-title" class="headline zh" data-i18n="headline">prompt-order</h1>
         <p class="intro" data-i18n="intro">看不懂菜单也没关系。写一句，或点几个关键词，生成今晚的点单；也可以进配方实验室，调一杯自己的版本。</p>
         <div class="mode-tabs" aria-label="Mode">
           <button type="button" class="active" data-mode="order" data-i18n="tabOrder">点单</button>
@@ -34,7 +34,7 @@
 
       <section class="prompt-card mode-panel active" id="orderPanel" aria-label="Prompt order">
         <div class="terminal-line">
-          <span><b>agibar@waic</b> ~ % cat your_mood</span>
+          <span><b>agibar@prompt-order</b> ~ % cat your_mood</span>
           <span data-i18n="terminal">一句话输入</span>
         </div>
 
@@ -169,7 +169,7 @@
     function renderCopy() {
       const lang = draft.lang || "zh";
       document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
-      document.title = lang === "zh" ? "Prompt 点单 | AGI Bar" : "Prompt Your Order | AGI Bar";
+      document.title = "prompt-order | AGI Bar";
       document.querySelectorAll("[data-i18n]").forEach((node) => {
         node.textContent = t(node.dataset.i18n);
       });
@@ -185,6 +185,7 @@
       document.querySelectorAll(".mode-panel").forEach((panel) => {
         panel.classList.toggle("active", panel.id === `${mode}Panel`);
       });
+      document.body.classList.toggle("lab-mode", mode === "lab");
       $("#page-title").classList.toggle("zh", lang === "zh");
       renderGroups();
       renderLab();

@@ -2,7 +2,7 @@
   const copy = {
     zh: {
       tagline: "值得一见的人，总在 AGI Bar",
-      headline: "Prompt 点单",
+      headline: "prompt-order",
       intro: "看不懂菜单也没关系。写一句，或点几个关键词，生成今晚的点单；也可以进配方实验室，调一杯自己的版本。",
       terminal: "一句话输入",
       placeholder: "比如：刚到现场，想要一杯清爽、适合聊天、不要太重的。",
@@ -51,7 +51,7 @@
     },
     en: {
       tagline: "People Worth Meeting Are Always at AGI Bar",
-      headline: "Prompt Your Order",
+      headline: "prompt-order",
       intro: "No need to decode the menu. Type a sentence or tap a few keywords, then get one clear order for tonight.",
       terminal: "one sentence in",
       placeholder: "Example: I just arrived and want something refreshing, social, and not too heavy.",
@@ -147,7 +147,7 @@
       key: "occasion",
       title: "groupOccasion",
       options: [
-        ["waic", "到场之后", "After arrival"],
+        ["arrival", "到场之后", "After arrival"],
         ["investors", "见投资人", "Meeting investors"],
         ["friends", "朋友叙旧", "Catching up with friends"],
         ["first", "今晚第一杯", "First drink of the night"],
@@ -168,7 +168,7 @@
     { id: 5, zh: "冲就对了", en: "Just Send It", base: "双倍 IPA", flavorZh: ["强烈", "苦香", "上头"], flavorEn: ["bold", "hoppy", "high-energy"], tags: ["strong", "courage", "celebratory", "founder", "launch", "dangerous"], reasonZh: "适合已经想好下一步，只差一点点胆量的人。", reasonEn: "For when the next move is clear and you only need a little more nerve." },
     { id: 6, zh: "直奔主题", en: "Straight to the Point", base: "草莓古斯", flavorZh: ["微酸", "莓果", "干净"], flavorEn: ["tart", "berry", "clean"], tags: ["talk", "networking", "social", "deep", "product", "investors"], reasonZh: "适合快速进入聊天，不浪费今晚任何一个值得一见的人。", reasonEn: "For getting straight into the conversation with someone worth meeting." },
     { id: 7, zh: "妥妥拿下", en: "Nailed It", base: "大米拉格", flavorZh: ["顺口", "干爽", "可靠"], flavorEn: ["crisp", "dry", "reliable"], tags: ["relaxed", "friends", "first", "lowkey", "engineer", "refreshing"], reasonZh: "不需要复杂理由，今晚这一杯就是稳。", reasonEn: "No complicated reasoning needed. This one simply works." },
-    { id: 8, zh: "绝不糊弄", en: "No Fluff", base: "青提乌龙西打", flavorZh: ["茶感", "青提", "清醒"], flavorEn: ["oolong", "grape", "clear"], tags: ["refreshing", "researcher", "engineer", "lowabv", "tired", "waic"], reasonZh: "适合听了一天宏大叙事之后，来点清醒、诚实、好喝的。", reasonEn: "After a day of grand narratives, this stays clear, honest, and drinkable." },
+    { id: 8, zh: "绝不糊弄", en: "No Fluff", base: "青提乌龙西打", flavorZh: ["茶感", "青提", "清醒"], flavorEn: ["oolong", "grape", "clear"], tags: ["refreshing", "researcher", "engineer", "lowabv", "tired", "arrival"], reasonZh: "适合听了一天宏大叙事之后，来点清醒、诚实、好喝的。", reasonEn: "After a day of grand narratives, this stays clear, honest, and drinkable." },
     { id: 9, zh: "肯定没错", en: "Can’t Go Wrong", base: "澳红酸角", flavorZh: ["酸甜", "热带", "安心"], flavorEn: ["sweet-tart", "tropical", "safe bet"], tags: ["firstShanghai", "shanghai", "surprising", "friends", "last", "social"], reasonZh: "适合第一次来、还没决定今晚走向，但想先点对的人。", reasonEn: "For starting right when you do not yet know where the night is going." }
   ];
 
@@ -260,8 +260,8 @@
   ];
 
   const storageKeys = {
-    orders: "agibar_waic_prompt_orders_v1",
-    draft: "agibar_waic_prompt_draft_v1"
+    orders: "agibar_prompt_order_orders_v2",
+    draft: "agibar_prompt_order_draft_v2"
   };
 
   function normalize(text) {
