@@ -35,16 +35,16 @@
       tabOrder: "点单",
       tabLab: "配方实验室",
       labHeadline: "配方实验室",
-      labIntro: "三款活动限定特调不直接公布名字。先看口味和场景，选无醇或含醇，再生成你的专属名称。",
+      labIntro: "三款活动限定特调先不命名。先看口味和场景，默认都是无醇；想要含醇可以按建议自己 DIY，也欢迎提交你的命名想法。",
       labTerminal: "选择一款",
-      labNoAlcohol: "无醇",
-      labWithAlcohol: "含醇",
+      labNoAlcohol: "无醇出品",
+      labWithAlcohol: "含醇 DIY",
       labFlavor: "口味",
       labScene: "适合",
       labFormula: "配方",
       labRatio: "比例",
-      labName: "专属名称",
-      labGenerate: "生成名称",
+      labName: "命名想法",
+      labGenerate: "换个想法",
       labShow: "给吧台看",
       labOrderPrefix: "编号 ",
       labSaved: "已生成，直接给吧台看编号。"
@@ -84,16 +84,16 @@
       tabOrder: "Order",
       tabLab: "Recipe Lab",
       labHeadline: "Recipe Lab",
-      labIntro: "Three event-only mixes stay unnamed on the sign. Pick a profile, choose no alcohol or with alcohol, then generate your own name.",
+      labIntro: "Three event-only mixes stay unnamed for now. The default serve is no alcohol; choose the DIY option if you want to add alcohol, and submit your naming idea.",
       labTerminal: "choose one",
-      labNoAlcohol: "No alcohol",
-      labWithAlcohol: "With alcohol",
+      labNoAlcohol: "No alcohol serve",
+      labWithAlcohol: "Alcohol DIY",
       labFlavor: "Profile",
       labScene: "Best for",
       labFormula: "Formula",
       labRatio: "Ratio",
-      labName: "Generated name",
-      labGenerate: "Generate Name",
+      labName: "Naming idea",
+      labGenerate: "Try Another",
       labShow: "Show to Bar",
       labOrderPrefix: "Code ",
       labSaved: "Ready. Show this code to the bar."
@@ -189,8 +189,8 @@
           en: ["Blue curacao syrup 5-15ml", "Coconut water 30ml", "Top with soda or Sprite", "Lemon slice"]
         },
         alcohol: {
-          zh: ["蓝柑糖浆 5-15ml", "起泡 30ml", "气泡水或雪碧补满", "柠檬片"],
-          en: ["Blue curacao syrup 5-15ml", "Sparkling base 30ml", "Top with soda or Sprite", "Lemon slice"]
+          zh: ["无醇出品为基础", "如需含醇，自行 DIY 加起泡 30ml", "气泡水或雪碧补满", "柠檬片"],
+          en: ["Start from the no alcohol serve", "DIY add sparkling base 30ml if wanted", "Top with soda or Sprite", "Lemon slice"]
         }
       },
       ratios: [
@@ -217,8 +217,8 @@
           en: ["Guava grape 90ml", "Full ice", "Soda 90ml with a small blue syrup mix", "Lemon juice 5ml", "Slow-pour the blue layer"]
         },
         alcohol: {
-          zh: ["芭乐青提 90ml", "满冰", "含醇蓝色层由吧台处理", "柠檬汁 5ml", "蓝色层缓慢倒满"],
-          en: ["Guava grape 90ml", "Full ice", "Bar-prepped blue layer", "Lemon juice 5ml", "Slow-pour the blue layer"]
+          zh: ["无醇出品为基础", "满冰", "如需含醇，自行 DIY 加少量基底", "柠檬汁 5ml", "蓝色层缓慢倒满"],
+          en: ["Start from the no alcohol serve", "Full ice", "DIY add a small base if wanted", "Lemon juice 5ml", "Slow-pour the blue layer"]
         }
       },
       ratios: [
@@ -245,8 +245,8 @@
           en: ["Apple juice 40ml", "Full old ice", "Top with chilled sweet soda", "Slow-pour espresso 40ml"]
         },
         alcohol: {
-          zh: ["苹果汁 40ml", "满杯老冰块", "含醇版本由吧台确认", "浓缩咖啡液 40ml 慢倒"],
-          en: ["Apple juice 40ml", "Full old ice", "Bar-confirmed alcohol version", "Slow-pour espresso 40ml"]
+          zh: ["无醇出品为基础", "满杯老冰块", "如需含醇，自行 DIY 加少量基底", "浓缩咖啡液 40ml 慢倒"],
+          en: ["Start from the no alcohol serve", "Full old ice", "DIY add a small base if wanted", "Slow-pour espresso 40ml"]
         }
       },
       ratios: [
