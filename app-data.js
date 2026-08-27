@@ -235,23 +235,23 @@
       hintEn: "No allocation, still a landing ritual.",
       colorZh: "琥珀金",
       colorEn: "amber gold",
-      flavorZh: ["菠萝", "苏打", "咖啡", "冰感"],
-      flavorEn: ["pineapple", "soda", "coffee", "ice"],
+      flavorZh: ["苹果", "苏打", "咖啡", "冰感"],
+      flavorEn: ["apple", "soda", "coffee", "ice"],
       sceneZh: "适合庆祝、收尾，或想要更强记忆点的人。",
       sceneEn: "For celebration, closing the night, or a stronger finish.",
       formulas: {
         zero: {
-          zh: ["100% 菠萝汁 40ml", "满杯老冰块", "冰镇含糖苏打水补足", "浓缩咖啡液 40ml 慢倒"],
-          en: ["100% pineapple juice 40ml", "Full old ice", "Top with chilled sweet soda", "Slow-pour espresso 40ml"]
+          zh: ["苹果汁 40ml", "满杯老冰块", "冰镇含糖苏打水补足", "浓缩咖啡液 40ml 慢倒"],
+          en: ["Apple juice 40ml", "Full old ice", "Top with chilled sweet soda", "Slow-pour espresso 40ml"]
         },
         alcohol: {
-          zh: ["菠萝汁 40ml", "满杯老冰块", "含醇版本由吧台确认", "浓缩咖啡液 40ml 慢倒"],
-          en: ["Pineapple juice 40ml", "Full old ice", "Bar-confirmed alcohol version", "Slow-pour espresso 40ml"]
+          zh: ["苹果汁 40ml", "满杯老冰块", "含醇版本由吧台确认", "浓缩咖啡液 40ml 慢倒"],
+          en: ["Apple juice 40ml", "Full old ice", "Bar-confirmed alcohol version", "Slow-pour espresso 40ml"]
         }
       },
       ratios: [
-        { value: "bright", zh: "更亮：菠萝更多", en: "brighter: more pineapple" },
-        { value: "standard", zh: "标准：菠萝 40ml", en: "standard: pineapple 40ml" },
+        { value: "bright", zh: "更亮：苹果更多", en: "brighter: more apple" },
+        { value: "standard", zh: "标准：苹果 40ml", en: "standard: apple 40ml" },
         { value: "deep", zh: "更深：咖啡更重", en: "deeper: more coffee" }
       ],
       nameBitsZh: ["上岸", "金线", "心跳", "浮盈", "翻倍", "琥珀"],
