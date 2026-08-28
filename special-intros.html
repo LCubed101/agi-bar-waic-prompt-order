@@ -85,8 +85,9 @@
 
     .visual {
       position: relative;
+      width: 80mm;
       height: 112mm;
-      margin-top: 9mm;
+      margin: 9mm auto 0;
       border: 1.4px solid var(--gold-soft);
       background: #000;
       overflow: hidden;
@@ -241,9 +242,10 @@
       }
 
       .visual {
+        width: min(72%, 320px);
         height: auto;
-        aspect-ratio: 1.58;
-        margin-top: 5vw;
+        aspect-ratio: 5 / 7;
+        margin: 5vw auto 0;
       }
 
       .chips {
