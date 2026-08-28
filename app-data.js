@@ -148,16 +148,16 @@
   ];
 
   const drinks = [
-    { id: 0, zh: "AGI：泡沫", en: "AGI Foam", base: "泡沫管够", flavorZh: ["轻盈", "好玩", "首杯"], flavorEn: ["light", "playful", "first round"], tags: ["foam", "photogenic", "first", "curious", "creator", "afterparty"], reasonZh: "致敬这个疯狂又迷人的时代，适合从第一句话开始破冰。", reasonEn: "A toast to this crazy and fascinating era, made for breaking the first layer of ice." },
-    { id: 1, zh: "面壁：稳稳接住", en: "Wallfacer: Steady Catch", base: "气泡苹果汁", flavorZh: ["低负担", "清爽", "稳"], flavorEn: ["easy", "refreshing", "steady"], tags: ["lowabv", "refreshing", "relaxed", "tired", "talk", "researcher"], reasonZh: "不抢话、不压场，适合把高密度信息慢慢接住。", reasonEn: "Calm, clear, and easy to stay with when the room is dense with ideas." },
-    { id: 2, zh: "马上安排", en: "On It", base: "西瓜西打", flavorZh: ["清甜", "果感", "行动派"], flavorEn: ["juicy", "bright", "action-ready"], tags: ["refreshing", "founder", "product", "launch", "celebratory", "first"], reasonZh: "适合刚结束会议、脑子还在跑、但今晚已经开始推进的人。", reasonEn: "For the person who left the conference and somehow already has a next step." },
-    { id: 3, zh: "不兜圈子", en: "No Circles", base: "佛手香柚康普茶", flavorZh: ["柑橘", "利落", "醒脑"], flavorEn: ["citrus", "direct", "sharp"], tags: ["talk", "networking", "product", "engineer", "lowkey", "deep"], reasonZh: "适合想跳过寒暄，直接进入真正问题的人。", reasonEn: "For skipping the small talk and getting to the real question." },
-    { id: 4, zh: "不玩套路", en: "No Tricks", base: "已尽调，正在补货", flavorZh: ["直白", "坦诚", "稀缺"], flavorEn: ["plain-spoken", "honest", "rare"], tags: ["investor", "lowkey", "deep", "courage"], reasonZh: "适合把话说清楚，也适合承认今晚不想再听 pitch。", reasonEn: "For saying things plainly, including that you have heard enough pitches tonight." },
-    { id: 5, zh: "冲就对了", en: "Just Send It", base: "双倍 IPA", flavorZh: ["强烈", "苦香", "上头"], flavorEn: ["bold", "hoppy", "high-energy"], tags: ["strong", "courage", "celebratory", "founder", "launch", "dangerous"], reasonZh: "适合已经想好下一步，只差一点点胆量的人。", reasonEn: "For when the next move is clear and you only need a little more nerve." },
-    { id: 6, zh: "直奔主题", en: "Straight to the Point", base: "草莓古斯", flavorZh: ["微酸", "莓果", "干净"], flavorEn: ["tart", "berry", "clean"], tags: ["talk", "networking", "social", "deep", "product", "investors"], reasonZh: "适合快速进入聊天，不浪费今晚任何一个值得一见的人。", reasonEn: "For getting straight into the conversation with someone worth meeting." },
-    { id: 7, zh: "妥妥拿下", en: "Nailed It", base: "大米拉格", flavorZh: ["顺口", "干爽", "可靠"], flavorEn: ["crisp", "dry", "reliable"], tags: ["relaxed", "friends", "first", "lowkey", "engineer", "refreshing"], reasonZh: "不需要复杂理由，今晚这一杯就是稳。", reasonEn: "No complicated reasoning needed. This one simply works." },
-    { id: 8, zh: "绝不糊弄", en: "No Fluff", base: "青提乌龙西打", flavorZh: ["茶感", "青提", "清醒"], flavorEn: ["oolong", "grape", "clear"], tags: ["refreshing", "researcher", "engineer", "lowabv", "tired", "arrival"], reasonZh: "适合听了一天宏大叙事之后，来点清醒、诚实、好喝的。", reasonEn: "After a day of grand narratives, this stays clear, honest, and drinkable." },
-    { id: 9, zh: "肯定没错", en: "Can’t Go Wrong", base: "澳红酸角", flavorZh: ["酸甜", "热带", "安心"], flavorEn: ["sweet-tart", "tropical", "safe bet"], tags: ["firstShanghai", "shanghai", "surprising", "friends", "last", "social"], reasonZh: "适合第一次来、还没决定今晚走向，但想先点对的人。", reasonEn: "For starting right when you do not yet know where the night is going." }
+    { id: 0, zh: "AGI", en: "AGI", base: "只有泡沫", baseEn: "Foam only", abv: "5.0%", flavorZh: ["泡沫", "轻盈", "首杯"], flavorEn: ["foam", "light", "first round"], tags: ["foam", "photogenic", "first", "curious", "creator", "afterparty"], reasonZh: "致敬这个疯狂又迷人的时代，适合从第一句话开始破冰。", reasonEn: "A toast to this crazy and fascinating era, made for breaking the first layer of ice." },
+    { id: 1, zh: "稳稳接住", en: "Steady Catch", base: "气泡维纳斯苹果汁", baseEn: "Sparkling Venus apple juice", abv: "无醇", flavorZh: ["无醇", "苹果", "清爽"], flavorEn: ["no alcohol", "apple", "refreshing"], tags: ["lowabv", "refreshing", "relaxed", "tired", "talk", "researcher"], reasonZh: "不抢话、不压场，适合把高密度信息慢慢接住。", reasonEn: "Calm, clear, and easy to stay with when the room is dense with ideas." },
+    { id: 2, zh: "马上安排", en: "On It", base: "杨桃芭乐康普茶", baseEn: "Starfruit guava kombucha", abv: "无醇", flavorZh: ["无醇", "果感", "行动派"], flavorEn: ["no alcohol", "fruity", "action-ready"], tags: ["lowabv", "refreshing", "founder", "product", "launch", "celebratory", "first"], reasonZh: "适合刚结束会议、脑子还在跑、但今晚已经开始推进的人。", reasonEn: "For the person who left the conference and somehow already has a next step." },
+    { id: 3, zh: "不兜圈子", en: "No Circles", base: "西瓜西打", baseEn: "Watermelon cider", abv: "3.7%", flavorZh: ["西瓜", "利落", "轻松"], flavorEn: ["watermelon", "direct", "easy"], tags: ["talk", "networking", "product", "engineer", "lowkey", "deep", "refreshing"], reasonZh: "适合想跳过寒暄，直接进入真正问题的人。", reasonEn: "For skipping the small talk and getting to the real question." },
+    { id: 4, zh: "不玩套路", en: "No Tricks", base: "超干爽皮尔森", baseEn: "Extra dry pilsner", abv: "5.2%", flavorZh: ["干爽", "直白", "利落"], flavorEn: ["dry", "plain-spoken", "crisp"], tags: ["investor", "lowkey", "deep", "courage", "refreshing"], reasonZh: "适合把话说清楚，也适合承认今晚不想再听 pitch。", reasonEn: "For saying things plainly, including that you have heard enough pitches tonight." },
+    { id: 5, zh: "冲就对了", en: "Just Send It", base: "草莓古斯", baseEn: "Strawberry gose", abv: "3.2%", flavorZh: ["草莓", "微酸", "上头"], flavorEn: ["strawberry", "tart", "high-energy"], tags: ["strong", "courage", "celebratory", "founder", "launch", "dangerous"], reasonZh: "适合已经想好下一步，只差一点点胆量的人。", reasonEn: "For when the next move is clear and you only need a little more nerve." },
+    { id: 6, zh: "直奔主题", en: "Straight to the Point", base: "三倍 IPA", baseEn: "Triple IPA", abv: "7.8%", flavorZh: ["强烈", "苦香", "直接"], flavorEn: ["bold", "hoppy", "direct"], tags: ["strong", "talk", "networking", "social", "deep", "product", "investors"], reasonZh: "适合快速进入聊天，不浪费今晚任何一个值得一见的人。", reasonEn: "For getting straight into the conversation with someone worth meeting." },
+    { id: 7, zh: "妥妥拿下", en: "Nailed It", base: "大米拉格", baseEn: "Rice lager", abv: "5.4%", flavorZh: ["顺口", "干爽", "可靠"], flavorEn: ["crisp", "dry", "reliable"], tags: ["relaxed", "friends", "first", "lowkey", "engineer", "refreshing"], reasonZh: "不需要复杂理由，今晚这一杯就是稳。", reasonEn: "No complicated reasoning needed. This one simply works." },
+    { id: 8, zh: "绝不糊弄", en: "No Fluff", base: "青提乌龙西打", baseEn: "Grape oolong cider", abv: "3.3%", flavorZh: ["青提", "乌龙", "清醒"], flavorEn: ["grape", "oolong", "clear"], tags: ["refreshing", "researcher", "engineer", "tired", "arrival"], reasonZh: "适合听了一天宏大叙事之后，来点清醒、诚实、好喝的。", reasonEn: "After a day of grand narratives, this stays clear, honest, and drinkable." },
+    { id: 9, zh: "肯定没错", en: "Can’t Go Wrong", base: "已卖爆，正在补货", baseEn: "Sold out, restocking", abv: "OUT", soldOut: true, flavorZh: ["售罄", "补货中", "安心"], flavorEn: ["sold out", "restocking", "safe bet"], tags: ["firstShanghai", "shanghai", "surprising", "friends", "last", "social"], reasonZh: "这款目前已卖爆，现场先换一款更稳。", reasonEn: "This one is sold out for now, so pick another reliable option." }
   ];
 
   const eventMixes = [
@@ -263,6 +263,7 @@
   }
 
   function scoreDrink(drink, promptText, selected, lastDrinkId) {
+    if (drink.soldOut) return Number.NEGATIVE_INFINITY;
     let score = 0;
     drink.tags.forEach((tag) => {
       if (selected.includes(tag)) score += 4;
@@ -301,6 +302,7 @@
   function chooseDrink(draft) {
     const selected = draft.selected || [];
     return drinks
+      .filter((drink) => !drink.soldOut)
       .map((drink) => ({ drink, score: scoreDrink(drink, draft.prompt || "", selected, draft.lastDrinkId) }))
       .sort((a, b) => b.score - a.score)[0].drink;
   }

@@ -127,13 +127,15 @@
 
       const lang = draft.lang || "zh";
       const flavors = lang === "zh" ? drink.flavorZh : drink.flavorEn;
+      const base = lang === "zh" ? drink.base : (drink.baseEn || drink.base);
       resultEl.innerHTML = `
         <div>
           <p class="order">${t("orderPrefix")}${drink.id}</p>
           <h1 class="drink-name ${lang === "en" ? "en-mode" : ""}">${drink.zh}</h1>
           ${lang === "en" ? `<p class="english-name">${drink.en}</p>` : ""}
           <div class="flavor">
-            <span class="pill">${drink.base}</span>
+            <span class="pill">${base}</span>
+            ${drink.abv ? `<span class="pill">${drink.abv}</span>` : ""}
             ${flavors.map((item) => `<span class="pill">${item}</span>`).join("")}
           </div>
           <p class="reason">${lang === "zh" ? drink.reasonZh : drink.reasonEn}</p>
