@@ -207,6 +207,93 @@
     .b { --glow: rgba(255, 122, 182, 0.24); }
     .c { --glow: rgba(217, 144, 53, 0.28); }
 
+    @media screen and (max-width: 900px) {
+      body {
+        padding: 12px;
+        overflow-x: hidden;
+      }
+
+      .pages {
+        grid-template-columns: minmax(0, 1fr);
+        width: 100%;
+        gap: 12px;
+      }
+
+      .page {
+        width: 100%;
+        height: auto;
+        min-height: calc((100vw - 24px) * 1.414);
+        padding: 5vw 6vw;
+      }
+
+      .page::after { inset: 4vw; }
+
+      .topline {
+        gap: 4vw;
+        font-size: clamp(10px, 2.7vw, 16px);
+      }
+
+      .mark {
+        width: clamp(42px, 13vw, 68px);
+        height: clamp(42px, 13vw, 68px);
+        font-size: clamp(16px, 4.5vw, 24px);
+        flex: 0 0 auto;
+      }
+
+      .visual {
+        height: auto;
+        aspect-ratio: 1.58;
+        margin-top: 5vw;
+      }
+
+      .chips {
+        gap: 6px;
+        margin-top: 8px;
+      }
+
+      .chip {
+        padding: 6px 10px;
+        font-size: clamp(12px, 3.3vw, 16px);
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .box {
+        min-height: 0;
+        padding: 14px;
+      }
+
+      .box h2 { font-size: clamp(16px, 4.5vw, 22px); }
+
+      ul,
+      .box p {
+        font-size: clamp(14px, 3.7vw, 18px);
+      }
+
+      .scan {
+        grid-template-columns: minmax(0, 1fr) clamp(96px, 28vw, 132px);
+        gap: 12px;
+        margin-top: 10px;
+      }
+
+      .scan-copy strong { font-size: clamp(22px, 6vw, 30px); }
+      .scan-copy span { font-size: clamp(8px, 2.3vw, 11px); }
+
+      .qr {
+        min-height: 0;
+        padding: 6px;
+      }
+
+      .qr img {
+        width: 100%;
+        height: auto;
+      }
+    }
+
     @media print {
       @page { size: A4 portrait; margin: 0; }
       html, body { background: #fff; padding: 0; }
