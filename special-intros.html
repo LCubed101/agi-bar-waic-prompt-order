@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AGI Bar 活动限定特调介绍</title>
+  <style>
+    :root {
+      --black: #070605;
+      --panel: #0f0c09;
+      --gold: #ffad32;
+      --gold-soft: rgba(255, 173, 50, 0.36);
+      --cream: #fff4dc;
+      --muted: #c8a36c;
+      --blue: #66d9ff;
+      --pink: #ff7ab6;
+      --amber: #d99035;
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      margin: 0;
+      background: #272018;
+      color: var(--cream);
+      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", Arial, sans-serif;
+    }
+
+    body { padding: 24px; }
+
+    .pages {
+      display: grid;
+      grid-template-columns: repeat(3, 210mm);
+      gap: 16px;
+      width: max-content;
+      margin: 0 auto;
+    }
+
+    .page {
+      position: relative;
+      width: 210mm;
+      height: 297mm;
+      overflow: hidden;
+      padding: 11mm 13mm 10mm;
+      background:
+        linear-gradient(90deg, rgba(255, 173, 50, 0.075) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(255, 173, 50, 0.065) 1px, transparent 1px),
+        radial-gradient(circle at 50% -8%, var(--glow), transparent 38%),
+        var(--black);
+      background-size: 12mm 12mm, 12mm 12mm, auto, auto;
+      border: 2px solid var(--gold);
+    }
+
+    .page::after {
+      content: "";
+      position: absolute;
+      inset: 8mm;
+      border: 1px solid var(--gold-soft);
+      pointer-events: none;
+    }
+
+    .topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8mm;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 12pt;
+      color: var(--cream);
+    }
+
+    .mark {
+      width: 18mm;
+      height: 18mm;
+      display: grid;
+      place-items: center;
+      border: 1.5px solid var(--gold);
+      color: var(--gold);
+      font-size: 18pt;
+      font-weight: 950;
+    }
+
+    .terminal b { color: var(--gold); }
+
+    .code-block {
+      display: grid;
+      grid-template-columns: 48mm 1fr;
+      gap: 9mm;
+      align-items: end;
+      margin-top: 10mm;
+    }
+
+    .code {
+      display: grid;
+      place-items: center;
+      height: 43mm;
+      border: 2px solid var(--gold);
+      color: var(--gold);
+      background: rgba(0, 0, 0, 0.32);
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 64pt;
+      line-height: 1;
+      font-weight: 950;
+    }
+
+    .secret {
+      color: var(--muted);
+      font-size: 13pt;
+      font-weight: 850;
+      line-height: 1.3;
+    }
+
+    h1 {
+      margin: 7mm 0 0;
+      color: #fff;
+      font-size: 40pt;
+      line-height: 0.95;
+      font-weight: 950;
+      letter-spacing: 0;
+    }
+
+    .hint {
+      margin: 4mm 0 0;
+      color: var(--accent);
+      font-size: 20pt;
+      line-height: 1.18;
+      font-weight: 950;
+    }
+
+    .visual {
+      position: relative;
+      height: 40mm;
+      margin-top: 6mm;
+      border: 1.4px solid var(--gold-soft);
+      background: var(--drink-gradient);
+      overflow: hidden;
+    }
+
+    .visual::before,
+    .visual::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.32);
+    }
+
+    .visual::before {
+      width: 18mm;
+      height: 18mm;
+      right: 22mm;
+      top: 10mm;
+    }
+
+    .visual::after {
+      width: 8mm;
+      height: 8mm;
+      right: 43mm;
+      top: 31mm;
+    }
+
+    .glass-line {
+      position: absolute;
+      inset: 8mm 18mm;
+      border: 2px solid rgba(255, 255, 255, 0.55);
+      border-top: 0;
+      border-radius: 0 0 18mm 18mm;
+      opacity: 0.78;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3mm;
+      margin-top: 5mm;
+    }
+
+    .chip {
+      border: 1px solid var(--gold-soft);
+      color: var(--cream);
+      padding: 2mm 4mm;
+      font-size: 13pt;
+      font-weight: 900;
+      background: rgba(0, 0, 0, 0.24);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 5mm;
+      margin-top: 6mm;
+    }
+
+    .box {
+      border: 1.2px solid var(--gold-soft);
+      background: rgba(0, 0, 0, 0.26);
+      padding: 5mm;
+      min-height: 38mm;
+    }
+
+    .box h2 {
+      margin: 0 0 3mm;
+      color: var(--gold);
+      font-size: 16pt;
+      line-height: 1;
+      font-weight: 950;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 5mm;
+      color: #fff;
+      font-size: 14pt;
+      line-height: 1.34;
+      font-weight: 850;
+    }
+
+    .box p {
+      margin: 0;
+      color: #fff;
+      font-size: 14pt;
+      line-height: 1.42;
+      font-weight: 850;
+    }
+
+    .scan {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 44mm;
+      gap: 5mm;
+      align-items: stretch;
+      margin-top: 5mm;
+      z-index: 1;
+    }
+
+    .scan-copy {
+      border-top: 1px dotted var(--gold);
+      padding-top: 4mm;
+    }
+
+    .scan-copy strong {
+      display: block;
+      color: #fff;
+      font-size: 23pt;
+      line-height: 1;
+      font-weight: 950;
+    }
+
+    .scan-copy span {
+      display: block;
+      margin-top: 3mm;
+      color: var(--muted);
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 9pt;
+      line-height: 1.32;
+      word-break: break-all;
+    }
+
+    .qr {
+      display: grid;
+      place-items: center;
+      min-height: 38mm;
+      border: 1.5px solid var(--gold);
+      background: #fff;
+      padding: 2mm;
+    }
+
+    .qr img {
+      display: block;
+      width: 34mm;
+      height: 34mm;
+    }
+
+    .a { --accent: var(--blue); --glow: rgba(102, 217, 255, 0.24); --drink-gradient: linear-gradient(180deg, rgba(236, 252, 255, 0.96) 0 42%, rgba(98, 206, 255, 0.9) 43% 100%); }
+    .b { --accent: var(--pink); --glow: rgba(255, 122, 182, 0.24); --drink-gradient: linear-gradient(180deg, rgba(85, 184, 255, 0.9) 0 33%, rgba(255, 122, 182, 0.96) 34% 100%); }
+    .c { --accent: var(--amber); --glow: rgba(217, 144, 53, 0.28); --drink-gradient: linear-gradient(180deg, rgba(80, 42, 14, 0.92) 0 28%, rgba(236, 168, 58, 0.95) 29% 100%); }
+
+    @media print {
+      @page { size: A4 portrait; margin: 0; }
+      html, body { background: #fff; padding: 0; }
+      .pages { display: block; width: auto; margin: 0; }
+      .page { page-break-after: always; border: 0; }
+    }
+  </style>
+</head>
+<body>
+  <main class="pages">
+    <section class="page a">
+      <div class="topline"><div class="mark">AGI</div><div class="terminal"><b>agibar@0829</b> ~ % special_mix A</div></div>
+      <div class="code-block"><div class="code">A</div><div><div class="secret">活动限定特调，先不公布名字。</div><h1>编号 A</h1></div></div>
+      <p class="hint">刚充值，下一秒免费</p>
+      <div class="visual"><div class="glass-line"></div></div>
+      <div class="chips"><span class="chip">蓝白渐变</span><span class="chip">清爽</span><span class="chip">气泡</span><span class="chip">椰子水</span><span class="chip">柠檬</span><span class="chip">无醇</span></div>
+      <div class="grid"><div class="box"><h2>配方</h2><ul><li>蓝柑糖浆 5-15ml</li><li>椰子水 30ml</li><li>气泡水或雪碧补满</li><li>柠檬片</li></ul></div><div class="box"><h2>DIY</h2><p>如需含醇，请在无醇版本基础上自行 DIY。</p></div></div>
+      <div class="scan"><div class="scan-copy"><strong>扫码看这一杯</strong><span>https://agi-bar-waic-prompt-order.netlify.app/index.html?tab=lab&mix=A</span></div><div class="qr"><img src="special-qr-A.png" alt="编号 A 二维码"></div></div>
+    </section>
+
+    <section class="page b">
+      <div class="topline"><div class="mark">AGI</div><div class="terminal"><b>agibar@0829</b> ~ % special_mix B</div></div>
+      <div class="code-block"><div class="code">B</div><div><div class="secret">活动限定特调，先不公布名字。</div><h1>编号 B</h1></div></div>
+      <p class="hint">能力涨了，账单也醒了</p>
+      <div class="visual"><div class="glass-line"></div></div>
+      <div class="chips"><span class="chip">粉底蓝顶分层</span><span class="chip">芭乐青提</span><span class="chip">苏打</span><span class="chip">柠檬</span><span class="chip">分层</span><span class="chip">无醇</span></div>
+      <div class="grid"><div class="box"><h2>配方</h2><ul><li>芭乐青提 90ml</li><li>满冰</li><li>苏打水 90ml + 蓝柑少量混合</li><li>柠檬汁 5ml</li><li>蓝色层缓慢倒满</li></ul></div><div class="box"><h2>DIY</h2><p>如需含醇，请在无醇版本基础上自行 DIY。</p></div></div>
+      <div class="scan"><div class="scan-copy"><strong>扫码看这一杯</strong><span>https://agi-bar-waic-prompt-order.netlify.app/index.html?tab=lab&mix=B</span></div><div class="qr"><img src="special-qr-B.png" alt="编号 B 二维码"></div></div>
+    </section>
+
+    <section class="page c">
+      <div class="topline"><div class="mark">AGI</div><div class="terminal"><b>agibar@0829</b> ~ % special_mix C</div></div>
+      <div class="code-block"><div class="code">C</div><div><div class="secret">活动限定特调，先不公布名字。</div><h1>编号 C</h1></div></div>
+      <p class="hint">没中签，也要有上岸的仪式感</p>
+      <div class="visual"><div class="glass-line"></div></div>
+      <div class="chips"><span class="chip">琥珀金</span><span class="chip">苹果</span><span class="chip">苏打</span><span class="chip">咖啡</span><span class="chip">冰感</span><span class="chip">无醇</span></div>
+      <div class="grid"><div class="box"><h2>配方</h2><ul><li>苹果汁 40ml</li><li>满杯老冰块</li><li>冰镇含糖苏打水补足</li><li>浓缩咖啡液 40ml 慢倒</li></ul></div><div class="box"><h2>DIY</h2><p>如需含醇，请在无醇版本基础上自行 DIY。</p></div></div>
+      <div class="scan"><div class="scan-copy"><strong>扫码看这一杯</strong><span>https://agi-bar-waic-prompt-order.netlify.app/index.html?tab=lab&mix=C</span></div><div class="qr"><img src="special-qr-C.png" alt="编号 C 二维码"></div></div>
+    </section>
+  </main>
+</body>
+</html>
