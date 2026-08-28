@@ -41,7 +41,18 @@
       labFormula: "配方",
       labDiy: "DIY",
       labOrderPrefix: "编号 ",
-      labSaved: "已生成，直接给吧台看编号。"
+      labSaved: "已生成，直接给吧台看编号。",
+      assistantOpen: "AI 配方助手",
+      assistantTitle: "AI 配方助手",
+      assistantIntro: "说一句你想怎么调整，我给你一份当前配方参考。",
+      assistantPlaceholder: "比如：少甜一点，气泡更足。",
+      assistantGenerate: "生成配方参考",
+      assistantGenerating: "生成中…",
+      assistantNeedPrompt: "先写一句你想怎么调整。",
+      assistantResult: "配方参考",
+      assistantNote: "调整建议",
+      assistantClose: "关闭",
+      assistantDisclaimer: "仅供现场调整参考，实际以现有原料为准。"
     },
     en: {
       tagline: "People Worth Meeting Are Always at AGI Bar",
@@ -84,7 +95,18 @@
       labFormula: "Formula",
       labDiy: "DIY",
       labOrderPrefix: "Code ",
-      labSaved: "Ready. Show this code to the bar."
+      labSaved: "Ready. Show this code to the bar.",
+      assistantOpen: "AI Recipe Assistant",
+      assistantTitle: "AI Recipe Assistant",
+      assistantIntro: "Describe the adjustment you want and get a reference for this recipe.",
+      assistantPlaceholder: "Example: less sweet, with more sparkle.",
+      assistantGenerate: "Generate Reference",
+      assistantGenerating: "Generating…",
+      assistantNeedPrompt: "Describe the adjustment first.",
+      assistantResult: "Recipe reference",
+      assistantNote: "Adjustment note",
+      assistantClose: "Close",
+      assistantDisclaimer: "For on-site reference only. Use the ingredients available at the bar."
     }
   };
 
@@ -188,6 +210,8 @@
         { value: "standard", zh: "标准：蓝柑 10ml", en: "standard: syrup 10ml" },
         { value: "sweet", zh: "更甜：蓝柑 15ml", en: "sweeter: syrup 15ml" }
       ],
+      assistantPromptsZh: ["少甜一点", "更清爽", "气泡更足", "含醇 DIY"],
+      assistantPromptsEn: ["Less sweet", "More refreshing", "More sparkle", "Alcohol DIY"],
       nameBitsZh: ["等等", "免费", "蓝屏", "胜利", "续费", "泡泡"],
       nameBitsEn: ["Waitlist", "Free", "Blue", "Victory", "Renewal", "Bubble"]
     },
@@ -218,6 +242,8 @@
         { value: "standard", zh: "标准：柠檬 5ml", en: "standard: lemon 5ml" },
         { value: "visual", zh: "更分层：蓝色层慢倒", en: "more layered: slower blue pour" }
       ],
+      assistantPromptsZh: ["更酸一点", "少甜一点", "分层明显", "含醇 DIY"],
+      assistantPromptsEn: ["More tart", "Less sweet", "Stronger layers", "Alcohol DIY"],
       nameBitsZh: ["账单", "刺痛", "粉蓝", "沉默", "暴击", "额度"],
       nameBitsEn: ["Invoice", "Sting", "Pink Blue", "Silence", "Critical", "Quota"]
     },
@@ -248,6 +274,8 @@
         { value: "standard", zh: "标准：苹果 40ml", en: "standard: apple 40ml" },
         { value: "deep", zh: "更深：咖啡更重", en: "deeper: more coffee" }
       ],
+      assistantPromptsZh: ["咖啡更浓", "苹果明显", "少甜一点", "含醇 DIY"],
+      assistantPromptsEn: ["More coffee", "More apple", "Less sweet", "Alcohol DIY"],
       nameBitsZh: ["上岸", "金线", "心跳", "浮盈", "翻倍", "琥珀"],
       nameBitsEn: ["Landing", "Goldline", "Heartbeat", "Profit", "Double", "Amber"]
     }
@@ -382,6 +410,97 @@
     return lang === "zh" ? `${first}${second}` : `${first} ${second}`;
   }
 
+  function generateRecipeReference(mix, prompt, lang) {
+    const text = normalize(prompt);
+    const has = (...words) => words.some((word) => text.includes(word));
+    let mode = "standard";
+
+    if (has("含醇", "加醇", "alcohol", "boozy")) mode = "alcohol";
+    else if (has("少甜", "不甜", "低糖", "less sweet", "not sweet")) mode = "lessSweet";
+    else if (has("酸", "柠檬", "tart", "sour", "lemon")) mode = "tart";
+    else if (has("气泡", "苏打", "sparkle", "sparkling", "soda")) mode = "sparkling";
+    else if (has("分层", "层次", "layer")) mode = "layered";
+    else if (has("咖啡", "浓缩", "coffee", "espresso")) mode = "coffee";
+    else if (has("苹果", "果味", "apple", "fruit")) mode = "fruit";
+    else if (has("清爽", "轻", "refresh", "light")) mode = "light";
+
+    const variants = {
+      A: {
+        lessSweet: {
+          zh: ["蓝柑糖浆 5ml", "椰子水 40ml", "气泡水补满", "柠檬片"],
+          en: ["Blue syrup 5ml", "Coconut water 40ml", "Top with soda", "Lemon slice"]
+        },
+        tart: {
+          zh: ["蓝柑糖浆 8ml", "椰子水 30ml", "柠檬汁 5ml", "气泡水补满"],
+          en: ["Blue syrup 8ml", "Coconut water 30ml", "Lemon juice 5ml", "Top with soda"]
+        },
+        sparkling: {
+          zh: ["蓝柑糖浆 8ml", "椰子水 20ml", "满冰", "气泡水补满"],
+          en: ["Blue syrup 8ml", "Coconut water 20ml", "Full ice", "Top with soda"]
+        },
+        light: {
+          zh: ["蓝柑糖浆 5ml", "椰子水 30ml", "满冰", "气泡水补满"],
+          en: ["Blue syrup 5ml", "Coconut water 30ml", "Full ice", "Top with soda"]
+        }
+      },
+      B: {
+        lessSweet: {
+          zh: ["芭乐青提 70ml", "满冰", "苏打水 110ml + 蓝柑少量", "柠檬汁 6ml", "蓝色层慢倒"],
+          en: ["Guava grape 70ml", "Full ice", "Soda 110ml with a little blue syrup", "Lemon juice 6ml", "Slow-pour blue layer"]
+        },
+        tart: {
+          zh: ["芭乐青提 85ml", "满冰", "苏打水 90ml + 蓝柑少量", "柠檬汁 8ml", "蓝色层慢倒"],
+          en: ["Guava grape 85ml", "Full ice", "Soda 90ml with a little blue syrup", "Lemon juice 8ml", "Slow-pour blue layer"]
+        },
+        layered: {
+          zh: ["芭乐青提 90ml", "冰加到杯口", "苏打水 90ml + 蓝柑少量", "沿吧勺缓慢倒入蓝色层"],
+          en: ["Guava grape 90ml", "Ice to the rim", "Soda 90ml with a little blue syrup", "Pour the blue layer slowly over a bar spoon"]
+        },
+        sparkling: {
+          zh: ["芭乐青提 75ml", "满冰", "苏打水 110ml + 蓝柑少量", "柠檬汁 5ml"],
+          en: ["Guava grape 75ml", "Full ice", "Soda 110ml with a little blue syrup", "Lemon juice 5ml"]
+        }
+      },
+      C: {
+        lessSweet: {
+          zh: ["苹果汁 10ml", "满杯老冰块", "含糖苏打水减半、气泡水补足", "浓缩咖啡液 40ml 慢倒"],
+          en: ["Apple juice 10ml", "Full old ice", "Half sweet soda, top with plain soda", "Slow-pour espresso 40ml"]
+        },
+        coffee: {
+          zh: ["苹果汁 20ml", "满杯老冰块", "冰镇含糖苏打水补足", "双倍浓缩 40-50ml 慢倒"],
+          en: ["Apple juice 20ml", "Full old ice", "Top with chilled sweet soda", "Slow-pour double espresso 40-50ml"]
+        },
+        fruit: {
+          zh: ["苹果汁 30ml", "满杯老冰块", "冰镇苏打水补足", "浓缩咖啡液 30ml 慢倒"],
+          en: ["Apple juice 30ml", "Full old ice", "Top with chilled soda", "Slow-pour espresso 30ml"]
+        },
+        sparkling: {
+          zh: ["苹果汁 15ml", "满杯老冰块", "气泡水补足", "浓缩咖啡液 35ml 慢倒"],
+          en: ["Apple juice 15ml", "Full old ice", "Top with soda", "Slow-pour espresso 35ml"]
+        }
+      }
+    };
+
+    let formula = variants[mix.id]?.[mode]?.[lang] || mix.formulas.zero[lang];
+    let note;
+    if (mode === "alcohol") {
+      formula = mix.formulas.alcohol[lang];
+      note = lang === "zh"
+        ? "先完成无醇版本，再少量加入自选基底；每次调整后先试味。"
+        : "Finish the no-alcohol version first, then add a small amount of your chosen base and taste after each adjustment.";
+    } else if (mode === "standard") {
+      note = lang === "zh"
+        ? "没有识别到明确的增减方向，先按标准配方制作，再从 5ml 的小幅变化开始。"
+        : "No single adjustment stood out. Start from the standard recipe and change one ingredient in 5ml steps.";
+    } else {
+      note = lang === "zh"
+        ? "一次只调整一个变量，先小量试味，再决定是否继续增加。"
+        : "Change one variable at a time, taste, then decide whether to add more.";
+    }
+
+    return { formula, note };
+  }
+
   window.AGIBarData = {
     copy,
     groups,
@@ -397,6 +516,7 @@
     countBy,
     extractWords,
     csvCell,
-    generateMixName
+    generateMixName,
+    generateRecipeReference
   };
 })();
