@@ -233,8 +233,8 @@
       sceneEn: "For celebration, closing the night, or a stronger finish.",
       formulas: {
         zero: {
-          zh: ["苹果汁 40ml", "满杯老冰块", "冰镇含糖苏打水补足", "浓缩咖啡液 40ml 慢倒"],
-          en: ["Apple juice 40ml", "Full old ice", "Top with chilled sweet soda", "Slow-pour espresso 40ml"]
+          zh: ["苹果汁 20ml", "满杯老冰块", "冰镇含糖苏打水补足", "浓缩咖啡液 40ml 慢倒"],
+          en: ["Apple juice 20ml", "Full old ice", "Top with chilled sweet soda", "Slow-pour espresso 40ml"]
         },
         alcohol: {
           zh: ["无醇出品为基础", "满杯老冰块", "如需含醇，自行 DIY 加少量基底", "浓缩咖啡液 40ml 慢倒"],
