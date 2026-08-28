@@ -24,7 +24,7 @@
       margin: 0;
       background: #24201a;
       color: var(--cream);
-      font-family: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", Arial, sans-serif;
+      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", Arial, sans-serif;
     }
 
     body {
@@ -92,7 +92,7 @@
     }
 
     h1 {
-      margin: 6mm 0 2mm;
+      margin: 4mm 0 1.5mm;
       color: #fff;
       font-size: 37pt;
       line-height: 0.94;
@@ -101,7 +101,7 @@
     }
 
     .subtitle {
-      margin: 0 0 5mm;
+      margin: 0 0 3mm;
       color: var(--muted);
       font-size: 13pt;
       line-height: 1.35;
@@ -112,11 +112,11 @@
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 3mm;
-      margin-bottom: 4mm;
+      margin-bottom: 3mm;
     }
 
     .rule {
-      min-height: 15mm;
+      min-height: 13mm;
       border: 1px solid var(--line-soft);
       padding: 3mm;
       background: rgba(0, 0, 0, 0.26);
@@ -143,11 +143,11 @@
 
     .drink-row {
       display: grid;
-      grid-template-columns: 13mm 1fr 47mm;
+      grid-template-columns: 13mm 1fr 57mm;
       align-items: stretch;
       gap: 3mm;
-      min-height: 16mm;
-      padding: 1.65mm 0;
+      min-height: 15mm;
+      padding: 1.1mm 0;
       border-top: 1px dotted var(--line);
     }
 
@@ -168,41 +168,28 @@
 
     .name {
       color: #fff;
-      font-size: 22pt;
-      line-height: 1;
+      font-size: 25pt;
+      line-height: 0.94;
       font-weight: 950;
     }
 
     .base {
       margin-top: 1.4mm;
       color: var(--paper);
-      font-size: 9.2pt;
+      font-size: 10pt;
       font-weight: 850;
       line-height: 1.2;
     }
 
-    .vote-boxes {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 2mm;
-      align-content: center;
-    }
-
-    .vote-box {
-      min-height: 11mm;
-      border: 1px solid var(--line-soft);
+    .vote-area {
+      min-height: 10.5mm;
+      align-self: center;
       background:
-        radial-gradient(circle, rgba(255, 173, 50, 0.18) 0 1.1mm, transparent 1.2mm),
+        radial-gradient(circle, rgba(255, 173, 50, 0.24) 0 1.15mm, transparent 1.24mm),
         rgba(255, 255, 255, 0.025);
-      background-size: 7mm 7mm;
-      padding: 1.4mm;
-    }
-
-    .vote-box span {
-      display: block;
-      color: var(--gold);
-      font-size: 8.5pt;
-      font-weight: 900;
+      background-size: 7.5mm 7.5mm;
+      border-left: 1px dotted var(--line-soft);
+      border-right: 1px dotted var(--line-soft);
     }
 
     .memory-grid {
@@ -319,22 +306,22 @@
         <div class="prompt"><b>agibar@sh:~$</b> vote drinks.menu</div>
       </div>
       <h1>贴一颗星<br>给今晚的选择</h1>
-      <p class="subtitle">喜欢口味贴左边，喜欢名字贴右边。每人不限一颗，诚实比克制重要。</p>
+      <p class="subtitle">喜欢口味贴星星，喜欢名字贴圆点。每人不限一颗。</p>
       <div class="rules">
         <div class="rule"><strong>★ 口味</strong><span>贴给你最想喝、最顺口、最想复购的那一款。</span></div>
         <div class="rule"><strong>● 名字</strong><span>贴给你记得住、会想复述、觉得有梗的名字。</span></div>
       </div>
       <div class="menu-list">
-        <article class="drink-row"><div class="num">[0]</div><div><div class="name">AGI</div><div class="base">只有泡沫</div></div><div class="vote-boxes"><div class="vote-box"><span>口味</span></div><div class="vote-box"><span>名字</span></div></div></article>
-        <article class="drink-row"><div class="num">[1]</div><div><div class="name">稳稳接住</div><div class="base">气泡维纳斯苹果汁 / 无醇</div></div><div class="vote-boxes"><div class="vote-box"><span>口味</span></div><div class="vote-box"><span>名字</span></div></div></article>
-        <article class="drink-row"><div class="num">[2]</div><div><div class="name">马上安排</div><div class="base">杨桃芭乐康普茶 / 无醇</div></div><div class="vote-boxes"><div class="vote-box"><span>口味</span></div><div class="vote-box"><span>名字</span></div></div></article>
-        <article class="drink-row"><div class="num">[3]</div><div><div class="name">不兜圈子</div><div class="base">西瓜西打 / 3.7%</div></div><div class="vote-boxes"><div class="vote-box"><span>口味</span></div><div class="vote-box"><span>名字</span></div></div></article>
-        <article class="drink-row"><div class="num">[4]</div><div><div class="name">不玩套路</div><div class="base">超干爽皮尔森 / 5.2%</div></div><div class="vote-boxes"><div class="vote-box"><span>口味</span></div><div class="vote-box"><span>名字</span></div></div></article>
-        <article class="drink-row"><div class="num">[5]</div><div><div class="name">冲就对了</div><div class="base">草莓古斯 / 3.2%</div></div><div class="vote-boxes"><div class="vote-box"><span>口味</span></div><div class="vote-box"><span>名字</span></div></div></article>
-        <article class="drink-row"><div class="num">[6]</div><div><div class="name">直奔主题</div><div class="base">三倍 IPA / 7.8%</div></div><div class="vote-boxes"><div class="vote-box"><span>口味</span></div><div class="vote-box"><span>名字</span></div></div></article>
-        <article class="drink-row"><div class="num">[7]</div><div><div class="name">妥妥拿下</div><div class="base">大米拉格 / 5.4%</div></div><div class="vote-boxes"><div class="vote-box"><span>口味</span></div><div class="vote-box"><span>名字</span></div></div></article>
-        <article class="drink-row"><div class="num">[8]</div><div><div class="name">绝不糊弄</div><div class="base">青提乌龙西打 / 3.3%</div></div><div class="vote-boxes"><div class="vote-box"><span>口味</span></div><div class="vote-box"><span>名字</span></div></div></article>
-        <article class="drink-row"><div class="num">OUT</div><div><div class="name">肯定没错</div><div class="base">已卖爆，正在补货</div></div><div class="vote-boxes"><div class="vote-box"><span>想念</span></div><div class="vote-box"><span>名字</span></div></div></article>
+        <article class="drink-row"><div class="num">[0]</div><div><div class="name">AGI</div><div class="base">只有泡沫</div></div><div class="vote-area"></div></article>
+        <article class="drink-row"><div class="num">[1]</div><div><div class="name">稳稳接住</div><div class="base">气泡维纳斯苹果汁 / 无醇</div></div><div class="vote-area"></div></article>
+        <article class="drink-row"><div class="num">[2]</div><div><div class="name">马上安排</div><div class="base">杨桃芭乐康普茶 / 无醇</div></div><div class="vote-area"></div></article>
+        <article class="drink-row"><div class="num">[3]</div><div><div class="name">不兜圈子</div><div class="base">西瓜西打 / 3.7%</div></div><div class="vote-area"></div></article>
+        <article class="drink-row"><div class="num">[4]</div><div><div class="name">不玩套路</div><div class="base">超干爽皮尔森 / 5.2%</div></div><div class="vote-area"></div></article>
+        <article class="drink-row"><div class="num">[5]</div><div><div class="name">冲就对了</div><div class="base">草莓古斯 / 3.2%</div></div><div class="vote-area"></div></article>
+        <article class="drink-row"><div class="num">[6]</div><div><div class="name">直奔主题</div><div class="base">三倍 IPA / 7.8%</div></div><div class="vote-area"></div></article>
+        <article class="drink-row"><div class="num">[7]</div><div><div class="name">妥妥拿下</div><div class="base">大米拉格 / 5.4%</div></div><div class="vote-area"></div></article>
+        <article class="drink-row"><div class="num">[8]</div><div><div class="name">绝不糊弄</div><div class="base">青提乌龙西打 / 3.3%</div></div><div class="vote-area"></div></article>
+        <article class="drink-row"><div class="num">OUT</div><div><div class="name">肯定没错</div><div class="base">已卖爆，正在补货</div></div><div class="vote-area"></div></article>
       </div>
       <div class="footer"><span>AGI Bar feedback board</span><span>page 1 / 2</span></div>
     </section>
