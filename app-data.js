@@ -216,8 +216,6 @@
     {
       id: "A",
       image: "special-visual-A.png",
-      hintZh: "刚充值，下一秒免费",
-      hintEn: "You subscribed. Then it became free.",
       colorZh: "蓝白渐变",
       colorEn: "blue-white gradient",
       flavorZh: ["清爽", "气泡", "椰子水", "柠檬"],
@@ -249,8 +247,6 @@
     {
       id: "B",
       image: "special-visual-B.png",
-      hintZh: "能力涨了，账单也醒了",
-      hintEn: "The model got stronger. The bill woke up.",
       colorZh: "粉底蓝顶分层",
       colorEn: "pink base, blue top",
       flavorZh: ["芭乐青提", "苏打", "柠檬", "分层"],
@@ -282,8 +278,6 @@
     {
       id: "C",
       image: "special-visual-C.png",
-      hintZh: "没中签，也要有上岸的仪式感",
-      hintEn: "No allocation, still a landing ritual.",
       colorZh: "琥珀金",
       colorEn: "amber gold",
       flavorZh: ["苹果", "苏打", "咖啡", "冰感"],

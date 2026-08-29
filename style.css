@@ -519,11 +519,6 @@ textarea::placeholder {
   object-position: center;
 }
 
-.mix-visual-b img {
-  object-fit: contain;
-  object-position: center center;
-}
-
 .mix-summary {
   min-width: 0;
 }
@@ -543,13 +538,6 @@ textarea::placeholder {
 
 .mix-content {
   min-width: 0;
-}
-
-.mix-hint {
-  margin: 0 0 6px;
-  color: var(--cyan);
-  font-family: "SFMono-Regular", Consolas, monospace;
-  font-size: 13px;
 }
 
 .mix-pills {
@@ -1497,11 +1485,6 @@ body.assistant-open {
 
   body.lab-mode .mix-card h3 {
     font-size: 30px;
-  }
-
-  body.lab-mode .mix-hint {
-    margin-bottom: 4px;
-    font-size: 12px;
   }
 
   body.lab-mode .mix-pills {

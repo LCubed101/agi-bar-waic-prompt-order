@@ -242,7 +242,6 @@
       const mix = data.eventMixes.find((item) => item.id === selectedMixId) || data.eventMixes[0];
       const formula = mix.formulas.zero[lang];
       const flavors = lang === "zh" ? mix.flavorZh : mix.flavorEn;
-      const hint = lang === "zh" ? mix.hintZh : mix.hintEn;
       const color = lang === "zh" ? mix.colorZh : mix.colorEn;
       const diyNote = lang === "zh" ? mix.diyZh : mix.diyEn;
       const progress = getMixProgress(mix.id);
@@ -262,7 +261,6 @@
               <img src="${mix.image}" alt="${color}">
             </figure>
             <div class="mix-summary">
-              <p class="mix-hint">${hint}</p>
               <div class="mix-pills">
                 <span class="pill">${color}</span>
                 ${flavors.map((item) => `<span class="pill">${item}</span>`).join("")}
