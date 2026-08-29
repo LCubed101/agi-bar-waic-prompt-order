@@ -107,12 +107,20 @@
     const assistantResultEl = $("#assistantResult");
     const assistantGenerateEl = $("#assistantGenerate");
     const assistantStorageKey = "agibar_recipe_assistant_v1";
+    const journeyStorageKey = "agibar_recipe_journey_v1";
     let assistantDrafts = loadAssistantDrafts();
     let activeAssistantMixId = "";
+    let journey = loadJourney();
+    const imageCache = new Map();
+    const previewUrls = new Map();
     const params = new URLSearchParams(window.location.search);
     const requestedMix = (params.get("mix") || "").toUpperCase();
-    let selectedMixId = data.eventMixes.some((mix) => mix.id === requestedMix) ? requestedMix : "";
-    let mode = params.get("tab") === "lab" || selectedMixId ? "lab" : "order";
+    const requestedMixIsValid = data.eventMixes.some((mix) => mix.id === requestedMix);
+    const savedMixIsValid = data.eventMixes.some((mix) => mix.id === journey.activeMixId);
+    let selectedMixId = journey.updatedAt && savedMixIsValid
+      ? journey.activeMixId
+      : requestedMixIsValid ? requestedMix : savedMixIsValid ? journey.activeMixId : data.eventMixes[0].id;
+    let mode = params.get("tab") === "lab" || requestedMixIsValid ? "lab" : "order";
 
     function t(key) {
       return data.copy[draft.lang || "zh"][key];
@@ -137,6 +145,86 @@
       localStorage.setItem(assistantStorageKey, JSON.stringify(assistantDrafts));
     }
 
+    function createClientId() {
+      if (window.crypto?.randomUUID) return window.crypto.randomUUID();
+      return `guest-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    }
+
+    function loadJourney() {
+      try {
+        const stored = JSON.parse(localStorage.getItem(journeyStorageKey) || "null");
+        if (stored?.clientId) return { ...stored, mixes: stored.mixes || {} };
+      } catch {
+        localStorage.removeItem(journeyStorageKey);
+      }
+      return { clientId: createClientId(), activeMixId: "", mixes: {}, updatedAt: "" };
+    }
+
+    function saveJourney() {
+      journey.updatedAt = new Date().toISOString();
+      localStorage.setItem(journeyStorageKey, JSON.stringify(journey));
+    }
+
+    function getMixProgress(mixId) {
+      if (!journey.mixes[mixId]) {
+        journey.mixes[mixId] = {
+          note: "",
+          hasImage: false,
+          submitted: false,
+          submissionId: "",
+          submittedAt: ""
+        };
+      }
+      return journey.mixes[mixId];
+    }
+
+    function openJourneyDatabase() {
+      return new Promise((resolve, reject) => {
+        if (!window.indexedDB) {
+          reject(new Error("IndexedDB unavailable"));
+          return;
+        }
+        const request = window.indexedDB.open("agibar_recipe_journey", 1);
+        request.onupgradeneeded = () => {
+          if (!request.result.objectStoreNames.contains("images")) {
+            request.result.createObjectStore("images");
+          }
+        };
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+      });
+    }
+
+    function imageStorageKey(mixId) {
+      return `${journey.clientId}:${mixId}`;
+    }
+
+    async function saveJourneyImage(mixId, blob) {
+      imageCache.set(mixId, blob);
+      const database = await openJourneyDatabase();
+      await new Promise((resolve, reject) => {
+        const transaction = database.transaction("images", "readwrite");
+        transaction.objectStore("images").put(blob, imageStorageKey(mixId));
+        transaction.oncomplete = resolve;
+        transaction.onerror = () => reject(transaction.error);
+      });
+      database.close();
+    }
+
+    async function loadJourneyImage(mixId) {
+      if (imageCache.has(mixId)) return imageCache.get(mixId);
+      const database = await openJourneyDatabase();
+      const blob = await new Promise((resolve, reject) => {
+        const transaction = database.transaction("images", "readonly");
+        const request = transaction.objectStore("images").get(imageStorageKey(mixId));
+        request.onsuccess = () => resolve(request.result || null);
+        request.onerror = () => reject(request.error);
+      });
+      database.close();
+      if (blob) imageCache.set(mixId, blob);
+      return blob;
+    }
+
     function renderGroups() {
       groupsEl.innerHTML = data.groups.map((group) => `
         <section class="group">
@@ -154,45 +242,254 @@
 
     function renderLab() {
       const lang = draft.lang || "zh";
-      const visibleMixes = selectedMixId
-        ? data.eventMixes.filter((mix) => mix.id === selectedMixId)
-        : data.eventMixes;
-      mixListEl.innerHTML = visibleMixes.map((mix) => {
-        const formula = mix.formulas.zero[lang];
-        const flavors = lang === "zh" ? mix.flavorZh : mix.flavorEn;
-        const hint = lang === "zh" ? mix.hintZh : mix.hintEn;
-        const color = lang === "zh" ? mix.colorZh : mix.colorEn;
-        const diyNote = lang === "zh" ? mix.diyZh : mix.diyEn;
-        return `
-          <article class="mix-card" data-mix="${mix.id}">
-            <div class="mix-code">${mix.id}</div>
-            <div class="mix-content">
+      const mix = data.eventMixes.find((item) => item.id === selectedMixId) || data.eventMixes[0];
+      const formula = mix.formulas.zero[lang];
+      const flavors = lang === "zh" ? mix.flavorZh : mix.flavorEn;
+      const hint = lang === "zh" ? mix.hintZh : mix.hintEn;
+      const color = lang === "zh" ? mix.colorZh : mix.colorEn;
+      const diyNote = lang === "zh" ? mix.diyZh : mix.diyEn;
+      const progress = getMixProgress(mix.id);
+
+      mixListEl.innerHTML = `
+        <div class="mix-switcher">
+          <p class="field-label">${t("mixChoose")}</p>
+          <div class="mix-switch" role="tablist" aria-label="${t("mixChoose")}">
+            ${data.eventMixes.map((item) => `
+              <button type="button" role="tab" aria-selected="${item.id === mix.id}" class="${item.id === mix.id ? "active" : ""}" data-mix-switch="${item.id}">${item.id}</button>
+            `).join("")}
+          </div>
+        </div>
+        <article class="mix-card" data-mix="${mix.id}">
+          <div class="mix-hero">
+            <figure class="mix-visual">
+              <img src="${mix.image}" alt="${color}">
+            </figure>
+            <div class="mix-summary">
               <p class="mix-hint">${hint}</p>
               <h3>${t("labOrderPrefix")}${mix.id}</h3>
               <div class="mix-pills">
                 <span class="pill">${color}</span>
                 ${flavors.map((item) => `<span class="pill">${item}</span>`).join("")}
               </div>
-              <div class="lab-fields">
-                <div>
-                  <p class="field-label">${t("labFormula")}</p>
-                  <ul>${formula.map((item) => `<li>${item}</li>`).join("")}</ul>
-                </div>
-                <div>
-                  <p class="field-label">${t("labDiy")}</p>
-                  <p>${diyNote}</p>
-                </div>
-              </div>
-              <div class="assistant-entry">
-                <button class="assistant-launch" type="button" data-assistant-open="${mix.id}">
-                  <span class="assistant-badge">AI</span>
-                  <span>${t("assistantOpen")}</span>
-                </button>
+            </div>
+          </div>
+          <div class="lab-fields">
+            <div>
+              <p class="field-label">${t("labFormula")}</p>
+              <ul>${formula.map((item) => `<li>${item}</li>`).join("")}</ul>
+            </div>
+            <div>
+              <p class="field-label">${t("labDiy")}</p>
+              <p>${diyNote}</p>
+            </div>
+          </div>
+          <div class="assistant-entry">
+            <button class="assistant-launch" type="button" data-assistant-open="${mix.id}">
+              <span class="assistant-badge">AI</span>
+              <span>${t("assistantOpen")}</span>
+            </button>
+          </div>
+          <section class="diy-share" aria-labelledby="diyTitle-${mix.id}">
+            <div class="diy-share-head">
+              <div>
+                <h4 id="diyTitle-${mix.id}">${t("diyUploadTitle")}</h4>
+                <p>${t("diyUploadIntro")}</p>
               </div>
             </div>
-          </article>
-        `;
-      }).join("");
+            <div class="diy-photo-empty" data-diy-empty>
+              <label class="diy-photo-button">
+                <span>${t("diyChoosePhoto")}</span>
+                <input type="file" accept="image/jpeg,image/png,image/webp" capture="environment" data-diy-photo="${mix.id}">
+              </label>
+            </div>
+            <div class="diy-preview" data-diy-preview hidden>
+              <img alt="${t("diyPhotoAlt")}" data-diy-preview-image>
+              <label class="diy-photo-button secondary-upload">
+                <span>${t("diyReplacePhoto")}</span>
+                <input type="file" accept="image/jpeg,image/png,image/webp" capture="environment" data-diy-photo="${mix.id}">
+              </label>
+            </div>
+            <label class="diy-note-label">
+              <span>${t("diyNoteLabel")}</span>
+              <textarea rows="3" data-diy-note="${mix.id}" placeholder="${t("diyNotePlaceholder")}"></textarea>
+            </label>
+            <p class="diy-status ${progress.submitted ? "success" : ""}" data-diy-status role="status" aria-live="polite"></p>
+            <button class="primary diy-submit" type="button" data-diy-submit="${mix.id}">${t("diySubmit")}</button>
+          </section>
+        </article>
+      `;
+
+      hydrateMixProgress(mix.id);
+    }
+
+    function setActiveMix(mixId) {
+      if (!data.eventMixes.some((mix) => mix.id === mixId)) return;
+      selectedMixId = mixId;
+      journey.activeMixId = mixId;
+      saveJourney();
+      const nextUrl = new URL(window.location.href);
+      nextUrl.searchParams.set("tab", "lab");
+      nextUrl.searchParams.set("mix", mixId);
+      window.history.replaceState(null, "", nextUrl);
+      renderLab();
+    }
+
+    function setDiyStatus(card, message, type = "") {
+      const status = card?.querySelector("[data-diy-status]");
+      if (!status) return;
+      status.textContent = message;
+      status.classList.toggle("error", type === "error");
+      status.classList.toggle("success", type === "success");
+    }
+
+    async function hydrateMixProgress(mixId) {
+      const card = mixListEl.querySelector(`[data-mix="${mixId}"]`);
+      if (!card) return;
+      const progress = getMixProgress(mixId);
+      const note = card.querySelector("[data-diy-note]");
+      note.value = progress.note || "";
+      if (progress.submitted) setDiyStatus(card, t("diySubmitted"), "success");
+      else if (progress.hasImage || progress.note) setDiyStatus(card, t("diySavedLocal"));
+
+      let blob = null;
+      try {
+        blob = await loadJourneyImage(mixId);
+      } catch {
+        blob = imageCache.get(mixId) || null;
+      }
+      if (!blob || !mixListEl.querySelector(`[data-mix="${mixId}"]`)) return;
+
+      if (previewUrls.has(mixId)) URL.revokeObjectURL(previewUrls.get(mixId));
+      const previewUrl = URL.createObjectURL(blob);
+      previewUrls.set(mixId, previewUrl);
+      const currentCard = mixListEl.querySelector(`[data-mix="${mixId}"]`);
+      currentCard.querySelector("[data-diy-preview-image]").src = previewUrl;
+      currentCard.querySelector("[data-diy-preview]").hidden = false;
+      currentCard.querySelector("[data-diy-empty]").hidden = true;
+    }
+
+    function loadImageElement(file) {
+      return new Promise((resolve, reject) => {
+        const image = new Image();
+        const objectUrl = URL.createObjectURL(file);
+        image.onload = () => {
+          URL.revokeObjectURL(objectUrl);
+          resolve(image);
+        };
+        image.onerror = () => {
+          URL.revokeObjectURL(objectUrl);
+          reject(new Error("Image load failed"));
+        };
+        image.src = objectUrl;
+      });
+    }
+
+    function canvasToBlob(canvas, quality) {
+      return new Promise((resolve, reject) => {
+        canvas.toBlob((blob) => blob ? resolve(blob) : reject(new Error("Image encode failed")), "image/jpeg", quality);
+      });
+    }
+
+    async function prepareUploadImage(file) {
+      if (!file?.type.startsWith("image/")) throw new Error("Invalid image");
+      const image = await loadImageElement(file);
+      const maxDimension = 1600;
+      const scale = Math.min(1, maxDimension / Math.max(image.naturalWidth, image.naturalHeight));
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+      canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+      canvas.getContext("2d", { alpha: false }).drawImage(image, 0, 0, canvas.width, canvas.height);
+      let blob = await canvasToBlob(canvas, 0.82);
+
+      if (blob.size > 1600000) {
+        const nextScale = Math.sqrt(1500000 / blob.size);
+        const resized = document.createElement("canvas");
+        resized.width = Math.max(1, Math.round(canvas.width * nextScale));
+        resized.height = Math.max(1, Math.round(canvas.height * nextScale));
+        resized.getContext("2d", { alpha: false }).drawImage(canvas, 0, 0, resized.width, resized.height);
+        blob = await canvasToBlob(resized, 0.74);
+      }
+      return blob;
+    }
+
+    function blobToBase64(blob) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result).split(",")[1] || "");
+        reader.onerror = () => reject(reader.error);
+        reader.readAsDataURL(blob);
+      });
+    }
+
+    async function handleDiyPhoto(mixId, file) {
+      const card = mixListEl.querySelector(`[data-mix="${mixId}"]`);
+      if (!card || !file) return;
+      setDiyStatus(card, t("diySavedLocal"));
+      try {
+        const blob = await prepareUploadImage(file);
+        await saveJourneyImage(mixId, blob);
+        const progress = getMixProgress(mixId);
+        progress.hasImage = true;
+        progress.submitted = false;
+        progress.submissionId = "";
+        progress.submittedAt = "";
+        saveJourney();
+        await hydrateMixProgress(mixId);
+        setDiyStatus(mixListEl.querySelector(`[data-mix="${mixId}"]`), t("diySavedLocal"));
+      } catch {
+        setDiyStatus(card, t("diyImageError"), "error");
+      }
+    }
+
+    async function submitDiyVersion(mixId) {
+      const card = mixListEl.querySelector(`[data-mix="${mixId}"]`);
+      if (!card) return;
+      const button = card.querySelector("[data-diy-submit]");
+      const progress = getMixProgress(mixId);
+      let imageBlob = null;
+      try {
+        imageBlob = await loadJourneyImage(mixId);
+      } catch {
+        imageBlob = imageCache.get(mixId) || null;
+      }
+      if (!imageBlob) {
+        setDiyStatus(card, t("diyNeedPhoto"), "error");
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = t("diySubmitting");
+      setDiyStatus(card, t("diySubmitting"));
+      try {
+        const mix = data.eventMixes.find((item) => item.id === mixId);
+        const response = await fetch("/.netlify/functions/submit-recipe", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            clientId: journey.clientId,
+            mixId,
+            language: draft.lang || "zh",
+            note: progress.note || "",
+            assistantPrompt: assistantDrafts[mixId]?.prompt || "",
+            formula: mix.formulas.zero[draft.lang || "zh"],
+            imageMime: imageBlob.type || "image/jpeg",
+            imageBase64: await blobToBase64(imageBlob)
+          })
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.ok) throw new Error(result.error || "Submission failed");
+
+        progress.submitted = true;
+        progress.submissionId = result.submissionId || "";
+        progress.submittedAt = new Date().toISOString();
+        saveJourney();
+        setDiyStatus(card, t("diySubmitted"), "success");
+      } catch {
+        setDiyStatus(card, t("diySubmitError"), "error");
+      } finally {
+        button.disabled = false;
+        button.textContent = t("diySubmit");
+      }
     }
 
     function renderAssistantModal() {
@@ -309,11 +606,13 @@
       if (!nextMode || mode === nextMode) return;
       mode = nextMode;
       const nextUrl = new URL(window.location.href);
-      if (mode === "lab") nextUrl.searchParams.set("tab", "lab");
+      if (mode === "lab") {
+        nextUrl.searchParams.set("tab", "lab");
+        nextUrl.searchParams.set("mix", selectedMixId);
+      }
       else {
         nextUrl.searchParams.delete("tab");
         nextUrl.searchParams.delete("mix");
-        selectedMixId = "";
       }
       window.history.replaceState(null, "", nextUrl);
       renderCopy();
@@ -355,6 +654,35 @@
       const modeButton = event.target.closest("[data-mode]");
       if (!modeButton) return;
       setMode(modeButton.dataset.mode);
+    });
+
+    document.addEventListener("click", (event) => {
+      const mixButton = event.target.closest("[data-mix-switch]");
+      if (mixButton) {
+        setActiveMix(mixButton.dataset.mixSwitch);
+        return;
+      }
+
+      const submitButton = event.target.closest("[data-diy-submit]");
+      if (submitButton) submitDiyVersion(submitButton.dataset.diySubmit);
+    });
+
+    document.addEventListener("change", (event) => {
+      const photoInput = event.target.closest("[data-diy-photo]");
+      if (!photoInput) return;
+      handleDiyPhoto(photoInput.dataset.diyPhoto, photoInput.files?.[0]);
+    });
+
+    document.addEventListener("input", (event) => {
+      const noteInput = event.target.closest("[data-diy-note]");
+      if (!noteInput) return;
+      const mixId = noteInput.dataset.diyNote;
+      const progress = getMixProgress(mixId);
+      progress.note = noteInput.value;
+      progress.submitted = false;
+      journey.activeMixId = mixId;
+      saveJourney();
+      setDiyStatus(mixListEl.querySelector(`[data-mix="${mixId}"]`), t("diySavedLocal"));
     });
 
     document.addEventListener("click", (event) => {

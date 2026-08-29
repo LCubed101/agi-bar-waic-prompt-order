@@ -52,7 +52,22 @@
       assistantResult: "配方参考",
       assistantNote: "调整建议",
       assistantClose: "关闭",
-      assistantDisclaimer: "仅供现场调整参考，实际以现有原料为准。"
+      assistantDisclaimer: "仅供现场调整参考，实际以现有原料为准。",
+      mixChoose: "切换配方",
+      diyUploadTitle: "上传你的 DIY",
+      diyUploadIntro: "没有完全照着配方也没关系，留下这次版本。",
+      diyChoosePhoto: "选择图片",
+      diyReplacePhoto: "更换图片",
+      diyNoteLabel: "你做了什么调整？",
+      diyNotePlaceholder: "比如：蓝柑减半，多加气泡，最后放了一片柠檬。",
+      diySubmit: "提交我的版本",
+      diySubmitting: "提交中…",
+      diyNeedPhoto: "先选择一张完成后的图片。",
+      diySavedLocal: "图片和描述已保存在这台设备。",
+      diySubmitted: "已提交。重新扫码后，这次进度仍会保留。",
+      diySubmitError: "提交没有完成，进度已保存在本机，请稍后再试。",
+      diyPhotoAlt: "本次 DIY 图片",
+      diyImageError: "这张图片无法读取，请换一张。"
     },
     en: {
       tagline: "People Worth Meeting Are Always at AGI Bar",
@@ -106,7 +121,22 @@
       assistantResult: "Recipe reference",
       assistantNote: "Adjustment note",
       assistantClose: "Close",
-      assistantDisclaimer: "For on-site reference only. Use the ingredients available at the bar."
+      assistantDisclaimer: "For on-site reference only. Use the ingredients available at the bar.",
+      mixChoose: "Switch recipe",
+      diyUploadTitle: "Upload Your DIY",
+      diyUploadIntro: "Went off-recipe? Keep a record of the version you made.",
+      diyChoosePhoto: "Choose Photo",
+      diyReplacePhoto: "Replace Photo",
+      diyNoteLabel: "What did you change?",
+      diyNotePlaceholder: "Example: half the blue syrup, more soda, lemon slice to finish.",
+      diySubmit: "Submit My Version",
+      diySubmitting: "Submitting…",
+      diyNeedPhoto: "Choose a finished photo first.",
+      diySavedLocal: "The photo and notes are saved on this device.",
+      diySubmitted: "Submitted. Your progress will remain after scanning again.",
+      diySubmitError: "Submission did not finish. Your progress is saved on this device; try again later.",
+      diyPhotoAlt: "DIY result photo",
+      diyImageError: "This image could not be read. Choose another one."
     }
   };
 
@@ -185,6 +215,7 @@
   const eventMixes = [
     {
       id: "A",
+      image: "special-visual-A.png",
       hintZh: "刚充值，下一秒免费",
       hintEn: "You subscribed. Then it became free.",
       colorZh: "蓝白渐变",
@@ -217,6 +248,7 @@
     },
     {
       id: "B",
+      image: "special-visual-B.png",
       hintZh: "能力涨了，账单也醒了",
       hintEn: "The model got stronger. The bill woke up.",
       colorZh: "粉底蓝顶分层",
@@ -249,6 +281,7 @@
     },
     {
       id: "C",
+      image: "special-visual-C.png",
       hintZh: "没中签，也要有上岸的仪式感",
       hintEn: "No allocation, still a landing ritual.",
       colorZh: "琥珀金",
