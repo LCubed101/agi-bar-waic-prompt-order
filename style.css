@@ -74,18 +74,12 @@ button {
   min-width: 0;
 }
 
-.mark {
-  width: 36px;
-  height: 36px;
-  display: grid;
-  place-items: center;
-  border: 1px solid var(--line);
-  color: var(--gold);
-  background: #16120f;
-  font-family: "SFMono-Regular", Consolas, monospace;
-  font-size: 18px;
-  font-weight: 800;
-  box-shadow: inset 0 0 18px rgba(244, 163, 64, 0.14);
+.brand-logo {
+  width: 170px;
+  height: 56px;
+  display: block;
+  object-fit: contain;
+  object-position: left center;
   flex: 0 0 auto;
 }
 
@@ -1304,10 +1298,9 @@ body.assistant-open {
     font-size: 13px;
   }
 
-  .mark {
-    width: 32px;
-    height: 32px;
-    font-size: 16px;
+  .brand-logo {
+    width: 148px;
+    height: 50px;
   }
 
   .lang {

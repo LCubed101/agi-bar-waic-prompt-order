@@ -64,7 +64,7 @@
       diySubmitting: "提交中…",
       diyNeedPhoto: "先选择一张完成后的图片。",
       diySavedLocal: "图片和描述已保存在这台设备。",
-      diySubmitted: "已提交。重新扫码后，这次进度仍会保留。",
+      diySubmitted: "已提交",
       diySubmitError: "提交没有完成，进度已保存在本机，请稍后再试。",
       diyPhotoAlt: "本次 DIY 图片",
       diyImageError: "这张图片无法读取，请换一张。"
@@ -133,7 +133,7 @@
       diySubmitting: "Submitting…",
       diyNeedPhoto: "Choose a finished photo first.",
       diySavedLocal: "The photo and notes are saved on this device.",
-      diySubmitted: "Submitted. Your progress will remain after scanning again.",
+      diySubmitted: "Submitted",
       diySubmitError: "Submission did not finish. Your progress is saved on this device; try again later.",
       diyPhotoAlt: "DIY result photo",
       diyImageError: "This image could not be read. Choose another one."

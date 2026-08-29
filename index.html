@@ -10,11 +10,7 @@
   <div class="shell">
     <header class="topbar">
       <div class="brand">
-        <div class="mark">AGI</div>
-        <div>
-          <p class="brand-title">AGI Bar // 0829</p>
-          <p class="brand-sub" data-i18n="tagline">值得一见的人，总在 AGI Bar</p>
-        </div>
+        <img class="brand-logo" src="assets/agi-bar-logo.png" alt="AGI Bar 知识蒸馏">
       </div>
       <div class="lang" aria-label="Language">
         <button type="button" class="active" data-lang="zh">中</button>
@@ -320,7 +316,7 @@
               <textarea rows="3" data-diy-note="${mix.id}" placeholder="${t("diyNotePlaceholder")}"></textarea>
             </label>
             <p class="diy-status ${progress.submitted ? "success" : ""}" data-diy-status role="status" aria-live="polite"></p>
-            <button class="primary diy-submit" type="button" data-diy-submit="${mix.id}">${t("diySubmit")}</button>
+            <button class="primary diy-submit" type="button" data-diy-submit="${mix.id}" ${progress.submitted ? "disabled" : ""}>${progress.submitted ? t("diySubmitted") : t("diySubmit")}</button>
           </section>
         </article>
       `;
@@ -441,8 +437,15 @@
         progress.submittedAt = "";
         saveJourney();
         await hydrateMixProgress(mixId);
-        setDiyStatus(mixListEl.querySelector(`[data-mix="${mixId}"]`), t("diySavedLocal"));
-      } catch {
+        const currentCard = mixListEl.querySelector(`[data-mix="${mixId}"]`);
+        const submitButton = currentCard?.querySelector("[data-diy-submit]");
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.textContent = t("diySubmit");
+        }
+        setDiyStatus(currentCard, t("diySavedLocal"));
+      } catch (error) {
+        console.error("DIY image preparation failed", { mixId, message: error.message || "Unknown image error" });
         setDiyStatus(card, t("diyImageError"), "error");
       }
     }
@@ -452,6 +455,12 @@
       if (!card) return;
       const button = card.querySelector("[data-diy-submit]");
       const progress = getMixProgress(mixId);
+      if (button.disabled || progress.submitted) return;
+
+      button.disabled = true;
+      button.textContent = t("diySubmitting");
+      setDiyStatus(card, t("diySubmitting"));
+
       let imageBlob = null;
       try {
         imageBlob = await loadJourneyImage(mixId);
@@ -460,12 +469,11 @@
       }
       if (!imageBlob) {
         setDiyStatus(card, t("diyNeedPhoto"), "error");
+        button.disabled = false;
+        button.textContent = t("diySubmit");
         return;
       }
 
-      button.disabled = true;
-      button.textContent = t("diySubmitting");
-      setDiyStatus(card, t("diySubmitting"));
       try {
         const mix = data.eventMixes.find((item) => item.id === mixId);
         const response = await fetch("/.netlify/functions/submit-recipe", {
@@ -483,18 +491,28 @@
           })
         });
         const result = await response.json().catch(() => ({}));
-        if (!response.ok || !result.ok) throw new Error(result.error || "Submission failed");
+        if (!response.ok || !result.ok) {
+          const error = new Error(result.error || "Submission failed");
+          error.code = result.error || "UNKNOWN_SUBMISSION_ERROR";
+          error.status = response.status;
+          throw error;
+        }
 
         progress.submitted = true;
         progress.submissionId = result.submissionId || "";
         progress.submittedAt = new Date().toISOString();
         saveJourney();
         setDiyStatus(card, t("diySubmitted"), "success");
-      } catch {
+      } catch (error) {
+        console.error("DIY submission failed", {
+          mixId,
+          status: error.status || 0,
+          code: error.code || error.message || "UNKNOWN_SUBMISSION_ERROR"
+        });
         setDiyStatus(card, t("diySubmitError"), "error");
       } finally {
-        button.disabled = false;
-        button.textContent = t("diySubmit");
+        button.disabled = progress.submitted;
+        button.textContent = progress.submitted ? t("diySubmitted") : t("diySubmit");
       }
     }
 
@@ -685,9 +703,17 @@
       const progress = getMixProgress(mixId);
       progress.note = noteInput.value;
       progress.submitted = false;
+      progress.submissionId = "";
+      progress.submittedAt = "";
       journey.activeMixId = mixId;
       saveJourney();
-      setDiyStatus(mixListEl.querySelector(`[data-mix="${mixId}"]`), t("diySavedLocal"));
+      const card = mixListEl.querySelector(`[data-mix="${mixId}"]`);
+      const button = card?.querySelector("[data-diy-submit]");
+      if (button) {
+        button.disabled = false;
+        button.textContent = t("diySubmit");
+      }
+      setDiyStatus(card, t("diySavedLocal"));
     });
 
     document.addEventListener("click", (event) => {

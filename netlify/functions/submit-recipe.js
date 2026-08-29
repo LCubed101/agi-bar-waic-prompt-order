@@ -101,7 +101,14 @@ exports.handler = async function handler(event) {
   const token = process.env.GITHUB_SUBMISSIONS_TOKEN;
   const repository = process.env.GITHUB_SUBMISSIONS_REPOSITORY;
   const branch = process.env.GITHUB_SUBMISSIONS_BRANCH || "main";
-  if (!token || !repository) return json(503, { ok: false, error: "UPLOAD_NOT_CONFIGURED" });
+  if (!token || !repository) {
+    console.error("UPLOAD_NOT_CONFIGURED", {
+      tokenConfigured: Boolean(token),
+      repositoryConfigured: Boolean(repository),
+      branch
+    });
+    return json(503, { ok: false, error: "UPLOAD_NOT_CONFIGURED" });
+  }
 
   let body;
   try {
@@ -175,7 +182,12 @@ exports.handler = async function handler(event) {
     });
     return json(200, { ok: true, submissionId, commitSha });
   } catch (error) {
-    console.error("Recipe submission failed", error);
+    console.error("GITHUB_UPLOAD_FAILED", {
+      status: error.status || 0,
+      message: error.message || "Unknown GitHub error",
+      repository,
+      branch
+    });
     return json(502, { ok: false, error: "GITHUB_UPLOAD_FAILED" });
   }
 };
