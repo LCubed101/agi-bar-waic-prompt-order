@@ -519,6 +519,11 @@ textarea::placeholder {
   object-position: center;
 }
 
+.mix-visual-b img {
+  object-fit: contain;
+  object-position: center center;
+}
+
 .mix-summary {
   min-width: 0;
 }
@@ -545,13 +550,6 @@ textarea::placeholder {
   color: var(--cyan);
   font-family: "SFMono-Regular", Consolas, monospace;
   font-size: 13px;
-}
-
-.mix-card h3 {
-  margin: 0;
-  color: var(--foam);
-  font-size: clamp(30px, 4vw, 48px);
-  line-height: 0.98;
 }
 
 .mix-pills {
@@ -865,13 +863,6 @@ body.assistant-open {
   align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
-}
-
-.assistant-code {
-  margin: 0 0 5px;
-  color: var(--cyan);
-  font-family: "SFMono-Regular", Consolas, monospace;
-  font-size: 12px;
 }
 
 .assistant-head h2 {

@@ -40,8 +40,6 @@
       labFlavor: "口味",
       labFormula: "配方",
       labDiy: "DIY",
-      labOrderPrefix: "编号 ",
-      labSaved: "已生成，直接给吧台看编号。",
       assistantOpen: "AI 配方助手",
       assistantTitle: "AI 配方助手",
       assistantIntro: "说一句你想怎么调整，我给你一份当前配方参考。",
@@ -109,8 +107,6 @@
       labFlavor: "Profile",
       labFormula: "Formula",
       labDiy: "DIY",
-      labOrderPrefix: "Code ",
-      labSaved: "Ready. Show this code to the bar.",
       assistantOpen: "AI Recipe Assistant",
       assistantTitle: "AI Recipe Assistant",
       assistantIntro: "Describe the adjustment you want and get a reference for this recipe.",
@@ -226,12 +222,12 @@
       sceneEn: "For arriving, easing in, and starting light.",
       formulas: {
         zero: {
-          zh: ["蓝柑糖浆 5-15ml", "椰子水 30ml", "气泡水或雪碧补满", "柠檬片"],
-          en: ["Blue curacao syrup 5-15ml", "Coconut water 30ml", "Top with soda or Sprite", "Lemon slice"]
+          zh: ["蓝柑糖浆 5-15ml", "椰子水 30ml", "气泡水/雪碧倒满", "柠檬片", "用长柄搅拌勺轻轻搅拌", "用吸管饮用"],
+          en: ["Blue curacao syrup 5-15ml", "Coconut water 30ml", "Top with soda or Sprite", "Lemon slice", "Stir gently with a long bar spoon", "Drink with a straw"]
         },
         alcohol: {
-          zh: ["无醇出品为基础", "如需含醇，自行 DIY 加起泡 30ml", "气泡水或雪碧补满", "柠檬片"],
-          en: ["Start from the no alcohol serve", "DIY add sparkling base 30ml if wanted", "Top with soda or Sprite", "Lemon slice"]
+          zh: ["蓝柑糖浆 5-15ml", "起泡酒 30ml", "气泡水/雪碧倒满", "柠檬片", "用长柄搅拌勺轻轻搅拌", "用吸管饮用"],
+          en: ["Blue curacao syrup 5-15ml", "Sparkling wine 30ml", "Top with soda or Sprite", "Lemon slice", "Stir gently with a long bar spoon", "Drink with a straw"]
         }
       },
       diyZh: "如需含醇，请在无醇版本基础上自行 DIY。",
@@ -241,8 +237,8 @@
         { value: "standard", zh: "标准：蓝柑 10ml", en: "standard: syrup 10ml" },
         { value: "sweet", zh: "更甜：蓝柑 15ml", en: "sweeter: syrup 15ml" }
       ],
-      assistantPromptsZh: ["少甜一点", "更清爽", "气泡更足", "含醇 DIY"],
-      assistantPromptsEn: ["Less sweet", "More refreshing", "More sparkle", "Alcohol DIY"],
+      assistantPromptsZh: ["少甜一点", "更清爽", "无酒精", "有酒精"],
+      assistantPromptsEn: ["Less sweet", "More refreshing", "No alcohol", "With alcohol"],
       nameBitsZh: ["等等", "免费", "蓝屏", "胜利", "续费", "泡泡"],
       nameBitsEn: ["Waitlist", "Free", "Blue", "Victory", "Renewal", "Bubble"]
     },
@@ -292,19 +288,19 @@
       sceneEn: "For celebration, closing the night, or a stronger finish.",
       formulas: {
         zero: {
-          zh: ["苹果汁 20ml", "满杯老冰块", "冰镇含糖苏打水补足", "浓缩咖啡液 40ml 慢倒"],
-          en: ["Apple juice 20ml", "Full old ice", "Top with chilled sweet soda", "Slow-pour espresso 40ml"]
+          zh: ["苹果汁 20ml", "满杯冰块", "苏打水/起泡水补足", "浓缩咖啡液 40ml 慢倒"],
+          en: ["Apple juice 20ml", "Fill the cup with ice", "Top with soda or sparkling water", "Slow-pour espresso 40ml"]
         },
         alcohol: {
-          zh: ["无醇出品为基础", "满杯老冰块", "如需含醇，自行 DIY 加少量基底", "浓缩咖啡液 40ml 慢倒"],
-          en: ["Start from the no alcohol serve", "Full old ice", "DIY add a small base if wanted", "Slow-pour espresso 40ml"]
+          zh: ["苹果汁 20ml", "满杯冰块", "苏打水/起泡水补足", "浓缩咖啡液 40ml 慢倒", "如需含醇，仅使用现场确认的基底少量 DIY"],
+          en: ["Apple juice 20ml", "Fill the cup with ice", "Top with soda or sparkling water", "Slow-pour espresso 40ml", "For alcohol, add only a small amount of a confirmed on-site base"]
         }
       },
       diyZh: "如需含醇，请在无醇版本基础上自行 DIY。",
       diyEn: "No alcohol by default. Add your own DIY twist if preferred.",
       ratios: [
         { value: "bright", zh: "更亮：苹果更多", en: "brighter: more apple" },
-        { value: "standard", zh: "标准：苹果 40ml", en: "standard: apple 40ml" },
+        { value: "standard", zh: "标准：苹果 20ml", en: "standard: apple 20ml" },
         { value: "deep", zh: "更深：咖啡更重", en: "deeper: more coffee" }
       ],
       assistantPromptsZh: ["咖啡更浓", "苹果明显", "少甜一点", "含醇 DIY"],
@@ -448,7 +444,8 @@
     const has = (...words) => words.some((word) => text.includes(word));
     let mode = "standard";
 
-    if (has("含醇", "加醇", "alcohol", "boozy")) mode = "alcohol";
+    if (has("含醇", "有酒精", "加醇", "with alcohol", "boozy")) mode = "alcohol";
+    else if (has("无酒精", "无醇", "no alcohol", "non-alcohol")) mode = "standard";
     else if (has("少甜", "不甜", "低糖", "less sweet", "not sweet")) mode = "lessSweet";
     else if (has("酸", "柠檬", "tart", "sour", "lemon")) mode = "tart";
     else if (has("气泡", "苏打", "sparkle", "sparkling", "soda")) mode = "sparkling";
@@ -460,8 +457,8 @@
     const variants = {
       A: {
         lessSweet: {
-          zh: ["蓝柑糖浆 5ml", "椰子水 40ml", "气泡水补满", "柠檬片"],
-          en: ["Blue syrup 5ml", "Coconut water 40ml", "Top with soda", "Lemon slice"]
+          zh: ["蓝柑糖浆 5ml", "椰子水 30ml", "气泡水/雪碧倒满", "柠檬片", "用长柄搅拌勺轻轻搅拌", "用吸管饮用"],
+          en: ["Blue syrup 5ml", "Coconut water 30ml", "Top with soda or Sprite", "Lemon slice", "Stir gently with a long bar spoon", "Drink with a straw"]
         },
         tart: {
           zh: ["蓝柑糖浆 8ml", "椰子水 30ml", "柠檬汁 5ml", "气泡水补满"],
@@ -486,8 +483,8 @@
           en: ["Guava grape 85ml", "Full ice", "Soda 90ml with a little blue syrup", "Lemon juice 8ml", "Slow-pour blue layer"]
         },
         layered: {
-          zh: ["芭乐青提 90ml", "冰加到杯口", "苏打水 90ml + 蓝柑少量", "沿吧勺缓慢倒入蓝色层"],
-          en: ["Guava grape 90ml", "Ice to the rim", "Soda 90ml with a little blue syrup", "Pour the blue layer slowly over a bar spoon"]
+          zh: ["芭乐青提 90ml", "冰加到杯口", "苏打水 90ml + 蓝柑少量", "沿长柄搅拌勺背或杯壁缓慢倒入蓝色层"],
+          en: ["Guava grape 90ml", "Ice to the rim", "Soda 90ml with a little blue syrup", "Pour the blue layer slowly over the back of a long bar spoon or down the cup wall"]
         },
         sparkling: {
           zh: ["芭乐青提 75ml", "满冰", "苏打水 110ml + 蓝柑少量", "柠檬汁 5ml"],
@@ -496,20 +493,20 @@
       },
       C: {
         lessSweet: {
-          zh: ["苹果汁 10ml", "满杯老冰块", "含糖苏打水减半、气泡水补足", "浓缩咖啡液 40ml 慢倒"],
-          en: ["Apple juice 10ml", "Full old ice", "Half sweet soda, top with plain soda", "Slow-pour espresso 40ml"]
+          zh: ["苹果汁 10ml", "满杯冰块", "苏打水/起泡水补足", "浓缩咖啡液 40ml 慢倒"],
+          en: ["Apple juice 10ml", "Fill the cup with ice", "Top with soda or sparkling water", "Slow-pour espresso 40ml"]
         },
         coffee: {
-          zh: ["苹果汁 20ml", "满杯老冰块", "冰镇含糖苏打水补足", "双倍浓缩 40-50ml 慢倒"],
-          en: ["Apple juice 20ml", "Full old ice", "Top with chilled sweet soda", "Slow-pour double espresso 40-50ml"]
+          zh: ["苹果汁 20ml", "满杯冰块", "苏打水/起泡水补足", "双倍浓缩 40-50ml 慢倒"],
+          en: ["Apple juice 20ml", "Fill the cup with ice", "Top with soda or sparkling water", "Slow-pour double espresso 40-50ml"]
         },
         fruit: {
-          zh: ["苹果汁 30ml", "满杯老冰块", "冰镇苏打水补足", "浓缩咖啡液 30ml 慢倒"],
-          en: ["Apple juice 30ml", "Full old ice", "Top with chilled soda", "Slow-pour espresso 30ml"]
+          zh: ["苹果汁 30ml", "满杯冰块", "苏打水/起泡水补足", "浓缩咖啡液 30ml 慢倒"],
+          en: ["Apple juice 30ml", "Fill the cup with ice", "Top with soda or sparkling water", "Slow-pour espresso 30ml"]
         },
         sparkling: {
-          zh: ["苹果汁 15ml", "满杯老冰块", "气泡水补足", "浓缩咖啡液 35ml 慢倒"],
-          en: ["Apple juice 15ml", "Full old ice", "Top with soda", "Slow-pour espresso 35ml"]
+          zh: ["苹果汁 15ml", "满杯冰块", "苏打水/起泡水补足", "浓缩咖啡液 35ml 慢倒"],
+          en: ["Apple juice 15ml", "Fill the cup with ice", "Top with soda or sparkling water", "Slow-pour espresso 35ml"]
         }
       }
     };
@@ -521,10 +518,22 @@
       note = lang === "zh"
         ? "先完成无醇版本，再少量加入自选基底；每次调整后先试味。"
         : "Finish the no-alcohol version first, then add a small amount of your chosen base and taste after each adjustment.";
+    } else if (mode === "lessSweet") {
+      note = lang === "zh"
+        ? "蓝柑糖浆显色和甜度都强，先从低量开始；仍偏甜时，用少量柠檬汁或苏打水调整，每次只改 3-5ml 并先试味。"
+        : "Blue syrup is both strongly colored and sweet. Start low; if it is still sweet, adjust with a little lemon juice or soda in 3-5ml steps, tasting each time.";
+    } else if (mode === "layered") {
+      note = lang === "zh"
+        ? "糖分高的液体更容易下沉。先加满冰，再沿长柄搅拌勺背或杯壁慢倒；倒得越慢，分层越稳定。"
+        : "Higher-sugar liquids tend to sink. Fill with ice first, then pour slowly over the back of a long bar spoon or down the cup wall for steadier layers.";
+    } else if (mode === "coffee") {
+      note = lang === "zh"
+        ? "咖啡机出液是热的：先加满冰和其他液体，再把浓缩沿杯壁慢倒，避免快速融冰和混层。"
+        : "The espresso is hot. Fill with ice and the other liquids first, then slow-pour espresso down the cup wall to reduce melting and mixing.";
     } else if (mode === "standard") {
       note = lang === "zh"
-        ? "没有识别到明确的增减方向，先按标准配方制作，再从 5ml 的小幅变化开始。"
-        : "No single adjustment stood out. Start from the standard recipe and change one ingredient in 5ml steps.";
+        ? "先按当前标准配方制作。一次只调整一个变量，每次 3-5ml，搅拌、试味后再继续。"
+        : "Start from the current standard recipe. Change one variable at a time in 3-5ml steps, stir, and taste before continuing.";
     } else {
       note = lang === "zh"
         ? "一次只调整一个变量，先小量试味，再决定是否继续增加。"

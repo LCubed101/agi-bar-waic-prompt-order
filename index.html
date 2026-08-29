@@ -71,10 +71,7 @@
     <button class="assistant-backdrop" type="button" data-assistant-close aria-label="关闭"></button>
     <div class="assistant-sheet" role="dialog" aria-modal="true" aria-labelledby="assistantTitle">
       <header class="assistant-head">
-        <div>
-          <p class="assistant-code" id="assistantCode"></p>
-          <h2 id="assistantTitle" data-i18n="assistantTitle">AI 配方助手</h2>
-        </div>
+        <h2 id="assistantTitle" data-i18n="assistantTitle">AI 配方助手</h2>
         <button class="assistant-close" type="button" data-assistant-close aria-label="关闭">×</button>
       </header>
       <p class="assistant-intro" data-i18n="assistantIntro">说一句你想怎么调整，我给你一份当前配方参考。</p>
@@ -261,12 +258,11 @@
         </div>
         <article class="mix-card" data-mix="${mix.id}">
           <div class="mix-hero">
-            <figure class="mix-visual">
+            <figure class="mix-visual mix-visual-${mix.id.toLowerCase()}">
               <img src="${mix.image}" alt="${color}">
             </figure>
             <div class="mix-summary">
               <p class="mix-hint">${hint}</p>
-              <h3>${t("labOrderPrefix")}${mix.id}</h3>
               <div class="mix-pills">
                 <span class="pill">${color}</span>
                 ${flavors.map((item) => `<span class="pill">${item}</span>`).join("")}
@@ -499,7 +495,6 @@
       const lang = draft.lang || "zh";
       const state = assistantDrafts[mix.id] || { prompt: "", generated: false };
       const prompts = lang === "zh" ? mix.assistantPromptsZh : mix.assistantPromptsEn;
-      $("#assistantCode").textContent = `${t("labOrderPrefix")}${mix.id}`;
       $("#assistantQuick").innerHTML = prompts.map((prompt) => `
         <button type="button" data-assistant-prompt="${prompt}">${prompt}</button>
       `).join("");
