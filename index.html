@@ -293,17 +293,29 @@
               </div>
             </div>
             <div class="diy-photo-empty" data-diy-empty>
-              <label class="diy-photo-button">
-                <span>${t("diyChoosePhoto")}</span>
-                <input type="file" accept="image/jpeg,image/png,image/webp" capture="environment" data-diy-photo="${mix.id}">
-              </label>
+              <div class="diy-photo-actions">
+                <label class="diy-photo-button">
+                  <span>${t("diyTakePhoto")}</span>
+                  <input type="file" accept="image/*" capture="environment" data-diy-photo="${mix.id}">
+                </label>
+                <label class="diy-photo-button album-button">
+                  <span>${t("diyChoosePhoto")}</span>
+                  <input type="file" accept="image/jpeg,image/png,image/webp" data-diy-photo="${mix.id}">
+                </label>
+              </div>
             </div>
             <div class="diy-preview" data-diy-preview hidden>
               <img alt="${t("diyPhotoAlt")}" data-diy-preview-image>
-              <label class="diy-photo-button secondary-upload">
-                <span>${t("diyReplacePhoto")}</span>
-                <input type="file" accept="image/jpeg,image/png,image/webp" capture="environment" data-diy-photo="${mix.id}">
-              </label>
+              <div class="diy-preview-actions">
+                <label class="diy-photo-button secondary-upload">
+                  <span>${t("diyRetakePhoto")}</span>
+                  <input type="file" accept="image/*" capture="environment" data-diy-photo="${mix.id}">
+                </label>
+                <label class="diy-photo-button secondary-upload">
+                  <span>${t("diyReplacePhoto")}</span>
+                  <input type="file" accept="image/jpeg,image/png,image/webp" data-diy-photo="${mix.id}">
+                </label>
+              </div>
             </div>
             <label class="diy-note-label">
               <span>${t("diyNoteLabel")}</span>
